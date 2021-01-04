@@ -27,25 +27,27 @@ class Contenders extends Component {
         const {editing, userInput} = this.state;
         const {handleInput, handleToggle, handleEdit} = this;
         return (
-            <section>
+            <section className='contender'>
                 <p>HP: {contender.hp}</p>
                 <img src={contender.image} alt={contender.name} />
-                {editing ? (
-                    <div>
-                        <input
-                            value={userInput}
-                            onChange={e => handleInput(e.target.value)}
-                            placeholder={contender.name} />
-                        <button onClick={() => handleEdit(contender.id)}>Submit</button>
-                    </div>
-                )
-                : (
-                    <div>
-                        <p>{contender.name}</p>
-                        <button onClick={handleToggle}>Edit Name</button>
-                    </div>
-                )}
-                <button onClick={() => replaceFn(contender.id)}>Replace</button>
+                <div className='cont-buttons'>
+                    {editing ? (
+                        <div>
+                            <input
+                                value={userInput}
+                                onChange={e => handleInput(e.target.value)}
+                                placeholder={contender.name} />
+                            <button onClick={() => handleEdit(contender.id)}>Submit</button>
+                        </div>
+                    )
+                    : (
+                        <div>
+                            <p>{contender.name}</p>
+                            <button onClick={handleToggle}>Edit Name</button>
+                            <button onClick={() => replaceFn(contender.id)}>Replace</button>
+                        </div>
+                    )}
+                </div>
             </section>
         )
     }

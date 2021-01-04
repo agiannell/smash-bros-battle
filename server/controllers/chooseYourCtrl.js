@@ -28,5 +28,9 @@ module.exports = {
         const contenderIndex = contenders.findIndex(e => e.id === +id);
         contenders.splice(contenderIndex, 1);
         res.status(200).send(contenders);
+    },
+    clearContender: (req,res) => {
+        contenders.splice(0, contenders.length);
+        res.status(200).send(contenders);
     }
 }

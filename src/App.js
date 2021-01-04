@@ -10,17 +10,31 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
+      allFighters: [],
       contenders: []
     }
   }
 
   componentDidMount() {
+    this.getFighters()
+    this.getContenders()
+  }
+
+  getContenders = () => {
     axios.get('/api/contenders')
       .then(res => {
         this.setState({contenders: res.data});
       })
       .catch(err => console.log(err));
   }
+
+  getFighters = () => {
+    axios.get('/api/fighters')
+        .then(res => {
+            this.setState({allFighters: res.data})
+        })
+        .catch(err => console.log(err));
+}
 
   chooseContender = (contender) => {
     axios.post('/api/contenders', {contender: contender})
@@ -47,19 +61,44 @@ class App extends Component {
       })
       .catch(err => console.log(err));
   }
+
+  clearContenders = () => {
+    axios.get('api/clear-contenders')
+      .then(res => {
+        this.setState({contenders: res.data});
+      })
+      .catch(err => console.log(err));
+  }
+
+  battleFn = () => {
+    const {contenders} = this.state;
+
+    if(contenders[0].hp > contenders[1].hp) {
+      alert(`${contenders[0].name} wins!`)
+    } else if(contenders[0].hp < contenders[1].hp) {
+      alert(`${contenders[1].name} wins!`)
+    } else {
+      alert('Draw!')
+    }
+
+    this.getFighters();
+    this.clearContenders();
+  }
   
   render() {
-    const {contenders} = this.state;
-    const {chooseContender, editName, replaceContender} = this;
-    console.log(contenders);
+    const {contenders, allFighters} = this.state;
+    const {chooseContender, editName, replaceContender, battleFn} = this;
+    console.log(contenders)
     return (
       <section className="App">
-        <Header />
-        <Battlefield
-          contenders={contenders}
-          editNameFn={editName}
-          replaceFn={replaceContender} />
+          <Header />
+          <Battlefield
+            contenders={contenders}
+            editNameFn={editName}
+            replaceFn={replaceContender}
+            battleFn={battleFn} />
         <Fighters
+          allFighters={allFighters}
           chooseFn={chooseContender}
           length={contenders.length} />
       </section>

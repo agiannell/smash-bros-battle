@@ -1,9 +1,30 @@
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bangers&display=swap');
+  /* font-family: 'Bangers', cursive; */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
+  /* font-family: 'Noto Sans KR', sans-serif; */
+
 
 
 body {
   text-align: center;
-  font-family: sans-serif;
+  font-family: 'Noto Sans KR', sans-serif;
+  background-color: rgb(37, 55, 83);
+  color: white;
+}
+
+header {
+  background-color: rgba(0, 0, 0, .7);
+  width: 100vw;
+  height: 60px;
+  position: fixed;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+header img {
+  height: 40px;
 }
 
 h1 {
@@ -22,11 +43,97 @@ h1 {
 }
 
 .battlefield {
+  /* border: 2px dotted blue; */
+  width: 100vw;
+  height: 70vh;
+  background-image: url(/src/img/sb-stage-2.jpg);
+  background-size: cover;
+  background-position: bottom;
+  box-sizing: border-box;
   display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
-.battlefield img {
-  height: 350px;
+.battlefield-div {
+  border: 2px dotted black;
+  width: 100vw;
+  height: 50vh;
+  margin: 20px 0;
+  padding: 0 20vw;
+  padding-top: 4vw;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  z-index: 1;
+}
+
+.battle-button {
+  height: 15vw;
+  width: 15vw;
+  background-color: rgb(255, 0, 0);
+  border: none;
+  color: white;
+  font-size: 3vw;
+  font-weight: bold;
+  box-sizing: border-box;
+  border-radius: 100%;
+  z-index: 2;
+  position: absolute;
+  left: 42vw;
+}
+
+.contender {
+  /* border: 2px dotted blue; */
+  height: 20vw;
+  width: 20vw;
+  display: flex;
+  box-sizing: border-box;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.contender img {
+  /* border: 2px dotted red; */
+  height: 200px;
+  margin: 4% 0;
+  background-color: rgba(0, 0, 0, .68);
+  box-shadow: 0 0 100px 100px rgba(0, 0, 0, .7);
+  z-index: -1;
+}
+
+.contender p {
+  z-index: 0;
+  font-family: 'Bangers', cursive;
+  font-size: 2em;
+}
+
+.cont-buttons {
+  border: 2px dotted yellowgreen;
+  height: 7vw;
+  width: 20vw;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.choose {
+  font-family: 'Bangers', cursive;
+  letter-spacing: .12em;
+  font-size: 3em;
+}
+
+.cont-buttons button {
+  padding: 2% 5%;
+  margin: 0 5px;
+  background-color: rgb(54, 153, 83);
+  color: white;
+  border: none;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: bold;
 }

@@ -1,7 +1,9 @@
+import logo from '../img/smash-logo-white.svg'
+
 const Header = () => {
     return (
         <header>
-            <h1>Header</h1>
+            <img src={logo} alt="logo" />
         </header>
     )
 }

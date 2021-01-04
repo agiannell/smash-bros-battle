@@ -1,11 +1,10 @@
 import Contenders from './Contenders'
 
 const Battlefield = (props) => {
-    const {contenders, editNameFn, replaceFn} = props
+    const {contenders, editNameFn, replaceFn, battleFn} = props
     return (
-        <section>
-            <h1>Battlefield</h1>
-            <div className='battlefield'>
+        <section className='battlefield'>
+            <div className='battlefield-div'>
                 {contenders.map((e, i) => (
                     <Contenders
                         key={i}
@@ -14,7 +13,15 @@ const Battlefield = (props) => {
                         editNameFn={editNameFn}
                         replaceFn={replaceFn} />
                 ))}
+                {/* <button className='battle-button'>BATTLE!</button> */}
             </div>
+            {contenders.length === 2
+                ? (
+                    <button 
+                        className='battle-button'
+                        onClick={battleFn}>BATTLE!</button>
+                )
+                : (null)}
         </section>
     )
 }

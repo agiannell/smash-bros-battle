@@ -14,5 +14,6 @@ app.get('/api/contenders', chooseYourCtrl.getContenders);
 app.post('/api/contenders', chooseYourCtrl.chooseContenders);
 app.put('/api/contenders/:id', chooseYourCtrl.editName);
 app.delete('/api/contenders/:id', chooseYourCtrl.replaceContender);
+app.get('/api/clear-contenders/', chooseYourCtrl.clearContender);
 
 app.listen(port, console.log(`Server is listening on port ${port}`));
