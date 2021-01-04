@@ -30,9 +30,9 @@ class Contenders extends Component {
             <section className='contender'>
                 <p>HP: {contender.hp}</p>
                 <img src={contender.image} alt={contender.name} />
-                <div className='cont-buttons'>
+                <div>
                     {editing ? (
-                        <div>
+                        <div className='cont-buttons'>
                             <input
                                 value={userInput}
                                 onChange={e => handleInput(e.target.value)}
@@ -43,8 +43,10 @@ class Contenders extends Component {
                     : (
                         <div>
                             <p>{contender.name}</p>
-                            <button onClick={handleToggle}>Edit Name</button>
-                            <button onClick={() => replaceFn(contender.id)}>Replace</button>
+                            <div className='cont-buttons'>
+                                <button onClick={handleToggle}>Edit Name</button>
+                                <button onClick={() => replaceFn(contender.id)}>Replace</button>
+                            </div>
                         </div>
                     )}
                 </div>

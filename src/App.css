@@ -56,11 +56,11 @@ h1 {
 }
 
 .battlefield-div {
-  border: 2px dotted black;
+  /* border: 2px dotted black; */
   width: 100vw;
   height: 50vh;
   margin: 20px 0;
-  padding: 0 20vw;
+  padding: 0 16vw;
   padding-top: 4vw;
   box-sizing: border-box;
   display: flex;
@@ -87,7 +87,7 @@ h1 {
 
 .contender {
   /* border: 2px dotted blue; */
-  height: 20vw;
+  /* height: 20vw; */
   width: 20vw;
   display: flex;
   box-sizing: border-box;
@@ -109,11 +109,12 @@ h1 {
   z-index: 0;
   font-family: 'Bangers', cursive;
   font-size: 2em;
+  letter-spacing: .1em;
 }
 
 .cont-buttons {
-  border: 2px dotted yellowgreen;
-  height: 7vw;
+  /* border: 2px dotted yellowgreen; */
+  /* height: 7vw; */
   width: 20vw;
   box-sizing: border-box;
   display: flex;
@@ -126,14 +127,21 @@ h1 {
   font-family: 'Bangers', cursive;
   letter-spacing: .12em;
   font-size: 3em;
+  margin-bottom: 25px;
 }
 
-.cont-buttons button {
+.contender button {
   padding: 2% 5%;
-  margin: 0 5px;
+  margin: 5px 5px;
   background-color: rgb(54, 153, 83);
   color: white;
   border: none;
   font-family: 'Noto Sans KR', sans-serif;
   font-weight: bold;
+}
+
+.cont-buttons input {
+  padding: 2% 2%;
+  margin-right: 2px;
+  font-size: 1em;
 }
