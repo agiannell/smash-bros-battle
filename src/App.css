@@ -13,7 +13,7 @@ body {
 }
 
 header {
-  background-color: rgba(0, 0, 0, .7);
+  background-color: rgba(0, 0, 0, .6);
   width: 100vw;
   height: 60px;
   position: fixed;
