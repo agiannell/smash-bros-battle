@@ -20,16 +20,15 @@ class Queue extends Component {
             <section>
                 {length !== 2
                 ? (
-                    <div onClick={handleClick}>
-                        <img src={fighter.image} alt={fighter.name} />
-                        <p>{fighter.name}</p>
-                    </div>
+                    <section>
+                        <div onClick={handleClick}>
+                            <img src={fighter.image} alt={fighter.name} />
+                            <p>{fighter.name}</p>
+                        </div>
+                    </section>
                 )
                 : (
-                    <div>
-                        <img src={fighter.image} alt={fighter.name} />
-                        <p>{fighter.name}</p>
-                    </div>
+                    <div></div>
                 )}
             </section>
         )

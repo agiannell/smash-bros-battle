@@ -28,7 +28,10 @@ class Fighters extends Component {
         const {chooseFn, length} = this.props;
         return (
             <section>
-                <h1>Choose Your Character!</h1>
+                {length !== 2
+                    ? (<h1>Choose Your Character!</h1>)
+                    : (<div></div>)
+                }
                 <div className='queue'>
                     {allFighters.map((e, i) => (
                         <Queue
