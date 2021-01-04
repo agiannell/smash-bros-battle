@@ -13,12 +13,24 @@ class Queue extends Component {
     }
     
     render() {
-        const {fighter} = this.props;
+        const {fighter, length} = this.props;
         const {handleClick} = this;
+        console.log(length)
         return (
-            <section onClick={handleClick}>
-                <img src={fighter.image} alt={fighter.name} />
-                <p>{fighter.name}</p>
+            <section>
+                {length !== 2
+                ? (
+                    <div onClick={handleClick}>
+                        <img src={fighter.image} alt={fighter.name} />
+                        <p>{fighter.name}</p>
+                    </div>
+                )
+                : (
+                    <div>
+                        <img src={fighter.image} alt={fighter.name} />
+                        <p>{fighter.name}</p>
+                    </div>
+                )}
             </section>
         )
     }

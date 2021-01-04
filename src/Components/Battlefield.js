@@ -10,6 +10,7 @@ const Battlefield = (props) => {
                     <Contenders
                         key={i}
                         contender={e}
+                        length={contenders.length}
                         editNameFn={editNameFn}
                         replaceFn={replaceFn} />
                 ))}

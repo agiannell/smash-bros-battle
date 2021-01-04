@@ -25,7 +25,7 @@ class Fighters extends Component {
     render() {
         console.log(this.state.allFighters);
         const {allFighters} = this.state;
-        const {chooseFn} = this.props;
+        const {chooseFn, length} = this.props;
         return (
             <section>
                 <h1>Choose Your Character!</h1>
@@ -34,7 +34,8 @@ class Fighters extends Component {
                         <Queue
                             key={i}
                             fighter={e}
-                            chooseFn={chooseFn} />
+                            chooseFn={chooseFn}
+                            length={length} />
                     ))}
                 </div>    
             </section>

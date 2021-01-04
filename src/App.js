@@ -60,7 +60,8 @@ class App extends Component {
           editNameFn={editName}
           replaceFn={replaceContender} />
         <Fighters
-          chooseFn={chooseContender} />
+          chooseFn={chooseContender}
+          length={contenders.length} />
       </section>
     );
   }
