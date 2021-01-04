@@ -6,12 +6,12 @@ module.exports = {
         res.status(200).send(contenders);
     },
     chooseContenders: (req, res) => {
-
+        const {} = req.body
     },
     editName: (req, res) => {
 
     },
-    getContenders: (req, res) => {
+    replaceContender: (req, res) => {
 
     }
 }

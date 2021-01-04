@@ -1,4 +1,5 @@
 import {Component} from 'react';
+import Header from './Components/Header'
 import './reset.css';
 import './App.css';
 
@@ -13,7 +14,7 @@ class App extends Component {
   render() {
     return (
       <section className="App">
-        <h1>App.js</h1>
+        <Header />
       </section>
     );
   }
