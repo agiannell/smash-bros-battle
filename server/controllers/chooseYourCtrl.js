@@ -1,17 +1,32 @@
 const contenders = [];
-let id = 0;
+let id = 1;
 
 module.exports = {
     getContenders: (req, res) => {
         res.status(200).send(contenders);
     },
     chooseContenders: (req, res) => {
-        const {} = req.body
+        const {contender} = req.body;
+
+        contender.id = id;
+        id++;
+
+        contenders.push(contender);
+        res.status(200).send(contenders);
     },
     editName: (req, res) => {
+        const {id} = req.params,
+              {name} = req.body;
 
+        const contender = contenders.find(e => e.id === +id);
+        contender.name = name;
+        res.status(200).send(contenders);
     },
     replaceContender: (req, res) => {
+        const {id} = req.params;
 
+        const contenderIndex = contenders.findIndex(e => e.id === +id);
+        contenders.splice(contenderIndex, 1);
+        res.status(200).send(contenders);
     }
 }

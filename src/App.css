@@ -3,10 +3,30 @@
 
 body {
   text-align: center;
-  font-family: 'Press Start 2P', cursive;
+  font-family: sans-serif;
 }
 
 h1 {
-  font-family: 'Press Start 2P', cursive;
   font-size: xx-large;
+  font-weight: bold;
+}
+
+.queue {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+}
+
+.queue img {
+   height: 150px;
+}
+
+.battlefield {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.battlefield img {
+  height: 350px;
 }

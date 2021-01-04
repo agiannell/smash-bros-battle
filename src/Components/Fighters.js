@@ -1,4 +1,5 @@
 import {Component} from 'react';
+import Queue from './Queue'
 import axios from 'axios';
 
 class Fighters extends Component {
@@ -10,7 +11,7 @@ class Fighters extends Component {
     }
 
     componentDidMount() {
-
+        this.getFighters()
     }
 
     getFighters = () => {
@@ -22,9 +23,20 @@ class Fighters extends Component {
     }
 
     render() {
+        console.log(this.state.allFighters);
+        const {allFighters} = this.state;
+        const {chooseFn} = this.props;
         return (
             <section>
-                <h1>Fighters</h1>
+                <h1>Choose Your Character!</h1>
+                <div className='queue'>
+                    {allFighters.map((e, i) => (
+                        <Queue
+                            key={i}
+                            fighter={e}
+                            chooseFn={chooseFn} />
+                    ))}
+                </div>    
             </section>
         )
     }
