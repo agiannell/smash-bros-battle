@@ -1,8 +1,8 @@
 import Queue from './Queue'
 
 const Fighters = (props) => {
-    const {allFighters, chooseFn, length, clearFn} = props;
-    // console.log(allFighters);
+    const {randFighters, chooseFn, length, clearFn} = props;
+    // console.log(randFighters);
     return (
         <section>
             {length !== 2
@@ -10,7 +10,7 @@ const Fighters = (props) => {
                 : (<button className='reset' onClick={clearFn}>Reset Battlefield</button>)
             }
             <div className='queue flyUp'>
-                {allFighters.map((e, i) => (
+                {randFighters.map((e, i) => (
                     <Queue
                         key={i}
                         fighter={e}

@@ -21,7 +21,7 @@ const Battlefield = (props) => {
                         onClick={battleFn}></div>
                 )
                 : (null)}
-            <div className='feather'></div>
+            {/* <div className='feather'></div> */}
         </section>
     )
 }

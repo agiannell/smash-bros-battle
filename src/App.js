@@ -7,12 +7,12 @@ import Fighters from './Components/Fighters'
 import './reset.css';
 import './App.css';
 import axios from 'axios';
-import { findAllByDisplayValue } from '@testing-library/react';
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
+      randFighters: [],
       allFighters: [],
       contenders: [],
       winnerName: '',
@@ -37,7 +37,7 @@ class App extends Component {
   getFighters = () => {
     axios.get('/api/fighters')
         .then(res => {
-            this.setState({allFighters: res.data})
+            this.setState({randFighters: res.data})
         })
         .catch(err => console.log(err));
 }
@@ -101,7 +101,7 @@ class App extends Component {
   }
   
   render() {
-    const {contenders, allFighters, winnerName, winner, draw} = this.state;
+    const {contenders, randFighters, winnerName, winner, draw} = this.state;
     const {chooseContender, editName, replaceContender, battleFn, clearContenders} = this;
     console.log(contenders)
 
@@ -123,7 +123,7 @@ class App extends Component {
           replaceFn={replaceContender}
           battleFn={battleFn} />
         <Fighters
-          allFighters={allFighters}
+          randFighters={randFighters}
           chooseFn={chooseContender}
           length={contenders.length}
           clearFn={clearContenders} />

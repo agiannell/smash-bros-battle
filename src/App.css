@@ -23,28 +23,104 @@ body {
   align-items: center;
 }
 
+.menu {
+  /* border: 2px dotted yellowgreen; */
+  background-color: transparent;
+  border: none;
+  background-image: url(/src/img/menu-lines.svg);
+  background-size: contain;
+  height: 25px;
+  width: 30px;
+  position: fixed;
+  box-sizing: border-box;
+  right: 25px;
+  z-index: 3;
+  transition: .5s cubic-bezier(.36, 0, .1, 1);
+}
+
+.menu:hover {
+  transform: rotate(90deg);
+  transform-origin: center;
+}
+
+nav {
+  /* border: 2px dotted yellowgreen; */
+  padding-right: 70px;
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 17vw;
+  height: 5vw;
+  background-color: rgb(37, 55, 83);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.growIn {
+  animation: growInAnimation .3s;
+}
+
+@keyframes growInAnimation {
+  from { 
+    opacity: 0;
+    transform: scale(0);
+    transform-origin: top right;
+   }
+  to { 
+    opacity: 1;
+    transform: scale(1);
+    transform-origin: top right;
+   }
+}
+
+nav button {
+  background-color: transparent;
+  color: white;
+  border: none;
+  font-family: 'Bangers', cursive;
+  font-size: 1.5em;
+  letter-spacing: .1em;
+}
+
 .winner {
   background-color: rgba(54, 153, 83, .9);
   width: 100vw;
   height: 100vh;
+  padding-bottom: 200px;
   position: fixed;
   box-sizing: border-box;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   z-index: 2;
 }
 
+.win-gif {
+  /* border: 2px dotted yellowgreen; */
+  height: 400px;
+}
+
 .draw {
   background-color: rgba(255, 0, 0, 0.9);
   width: 100vw;
-  height: 60px;
+  height: 100vh;
+  padding-bottom: 100px;
   position: fixed;
   box-sizing: border-box;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   z-index: 2;
+}
+
+.draw-gif {
+  /* border: 2px dotted yellowgreen; */
+  height: 350px;
 }
 
 .close {
@@ -61,7 +137,7 @@ body {
   border: none;
   background-color: transparent;
   color: white;
-  transition: 1s cubic-bezier(.36, 0, .1, 1);
+  transition: .5s cubic-bezier(.36, 0, .1, 1);
 }
 
 .close:hover {
@@ -296,4 +372,58 @@ h2 {
   padding: 2% 2%;
   margin-right: 2px;
   font-size: 1em;
+}
+
+.all-fighters-container {
+  /* border: 2px dotted yellowgreen; */
+  height: 100vh;
+  width: 100vw;
+  margin: 0 0;
+  background-color: rgb(37, 55, 83);
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  box-sizing: border-box;
+}
+
+.all-fighters-container h2 {
+  margin-top: 20px;
+  font-family: 'Bangers', cursive;
+  font-size: 3em;
+  letter-spacing: .12em;
+}
+
+.all-fighters {
+  overflow: scroll;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 15px 30px;
+  box-sizing: border-box;
+}
+
+.indiv-fighters {
+  /* border: 2px dotted red; */
+  margin: 10px 20px;
+  font-weight: bold;
+  box-sizing: border-box;
+}
+
+.indiv-fighters img {
+  height: 100px;
+  margin: 5px 0;
+}
+
+.flyDown {
+  animation: flyDownAnimation 1.5s cubic-bezier(.9, .12, .7, 1);
+}
+
+@keyframes flyDownAnimation {
+  from { 
+    margin-bottom: 2000px;
+    opacity: 0; 
+  }
+  to { 
+    margin-bottom: 0; 
+    opacity: 1;
+  }
 }
