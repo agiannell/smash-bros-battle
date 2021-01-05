@@ -68,6 +68,8 @@ class App extends Component {
         this.setState({contenders: res.data});
       })
       .catch(err => console.log(err));
+
+      this.getFighters();
   }
 
   battleFn = () => {
@@ -81,13 +83,13 @@ class App extends Component {
       alert('Draw!')
     }
 
-    this.getFighters();
+    // this.getFighters();
     this.clearContenders();
   }
   
   render() {
     const {contenders, allFighters} = this.state;
-    const {chooseContender, editName, replaceContender, battleFn} = this;
+    const {chooseContender, editName, replaceContender, battleFn, clearContenders} = this;
     console.log(contenders)
     return (
       <section className="App">
@@ -100,7 +102,8 @@ class App extends Component {
         <Fighters
           allFighters={allFighters}
           chooseFn={chooseContender}
-          length={contenders.length} />
+          length={contenders.length}
+          clearFn={clearContenders} />
       </section>
     );
   }

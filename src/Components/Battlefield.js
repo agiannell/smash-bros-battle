@@ -17,9 +17,9 @@ const Battlefield = (props) => {
             </div>
             {contenders.length === 2
                 ? (
-                    <button 
+                    <div 
                         className='battle-button'
-                        onClick={battleFn}>BATTLE!</button>
+                        onClick={battleFn}></div>
                 )
                 : (null)}
         </section>

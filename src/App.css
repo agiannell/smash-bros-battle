@@ -33,13 +33,49 @@ h1 {
 }
 
 .queue {
+  /* border: 2px dotted yellowgreen; */
   display: flex;
+  box-sizing: border-box;
   justify-content: space-evenly;
   flex-wrap: wrap;
 }
 
 .queue img {
-   height: 150px;
+  /* border: 2px dotted red; */
+  height: 9vw;
+  margin-bottom: 5px;
+}
+
+.fighter {
+  /* border: 2px dotted green; */
+  transition: .15s ease;
+}
+
+.fighter:hover {
+  transform: scale(1.1);
+}
+
+.fighter-name {
+  /* border: 2px dotted green; */
+  font-weight: bold;
+  z-index: 1;
+}
+
+.reset {
+  padding: 2%;
+  margin-top: 2vw;
+  border: none;
+  background-color: #535353;
+  color: white;
+  font-family: 'Bangers', cursive;
+  font-size: 2em;
+  letter-spacing: .12em;
+  transition: .15s ease-in-out;
+}
+
+.reset:hover {
+  transform: scale(1.07);
+  background-color: #ff3738;
 }
 
 .battlefield {
@@ -70,7 +106,7 @@ h1 {
   z-index: 1;
 }
 
-.battle-button {
+/* .battle-button {
   height: 15vw;
   width: 15vw;
   background-color: rgb(255, 0, 0);
@@ -83,6 +119,23 @@ h1 {
   z-index: 2;
   position: absolute;
   left: 42vw;
+} */
+
+.battle-button {
+  height: 15vw;
+  width: 15vw;
+  background-image: url(/src/img/battle-button-1.svg);
+  background-size: cover;
+  box-sizing: border-box;
+  z-index: 2;
+  position: absolute;
+  left: 42vw;
+  transition: .15s ease-in-out;
+}
+
+.battle-button:hover {
+  background-image: url(/src/img/battle-button-2.svg);
+  transform: scale(1.1);
 }
 
 .contender {
@@ -138,6 +191,11 @@ h1 {
   border: none;
   font-family: 'Noto Sans KR', sans-serif;
   font-weight: bold;
+  transition: .15s ease-in-out;
+}
+
+.contender button:hover {
+  background-color: rgb(100, 187, 126);
 }
 
 .cont-buttons input {

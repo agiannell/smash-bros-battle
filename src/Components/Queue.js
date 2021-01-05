@@ -23,9 +23,9 @@ class Queue extends Component {
                 {length < 2
                     ? (
                         <section>
-                            <div onClick={handleClick}>
+                            <div onClick={handleClick} className='fighter'>
                                 <img src={fighter.image} alt={fighter.name} />
-                                <p>{fighter.name}</p>
+                                <p className='fighter-name'>{fighter.name}</p>
                             </div>
                         </section>
                     )

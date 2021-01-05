@@ -1,13 +1,13 @@
 import Queue from './Queue'
 
 const Fighters = (props) => {
-    const {allFighters, chooseFn, length} = props;
+    const {allFighters, chooseFn, length, clearFn} = props;
     // console.log(allFighters);
     return (
         <section>
             {length !== 2
                 ? (<h1 className='choose'>Choose Your Character!</h1>)
-                : (null)
+                : (<button className='reset' onClick={clearFn}>Reset Battlefield</button>)
             }
             <div className='queue'>
                 {allFighters.map((e, i) => (
