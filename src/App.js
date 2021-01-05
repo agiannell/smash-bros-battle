@@ -1,17 +1,23 @@
 import {Component} from 'react';
 import Header from './Components/Header'
+import WinHeader from './Components/WinHeader'
+import DrawHeader from './Components/DrawHeader'
 import Battlefield from './Components/Battlefield'
 import Fighters from './Components/Fighters'
 import './reset.css';
 import './App.css';
 import axios from 'axios';
+import { findAllByDisplayValue } from '@testing-library/react';
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
       allFighters: [],
-      contenders: []
+      contenders: [],
+      winnerName: '',
+      winner: false,
+      draw: false,
     }
   }
 
@@ -65,7 +71,11 @@ class App extends Component {
   clearContenders = () => {
     axios.get('api/clear-contenders')
       .then(res => {
-        this.setState({contenders: res.data});
+        this.setState({
+          contenders: res.data,
+          winner: false,
+          draw: false
+        });
       })
       .catch(err => console.log(err));
 
@@ -76,29 +86,42 @@ class App extends Component {
     const {contenders} = this.state;
 
     if(contenders[0].hp > contenders[1].hp) {
-      alert(`${contenders[0].name} wins!`)
+      this.setState({
+        winnerName: contenders[0].name,
+        winner: true
+      })
     } else if(contenders[0].hp < contenders[1].hp) {
-      alert(`${contenders[1].name} wins!`)
+      this.setState({
+        winnerName: contenders[1].name,
+        winner: true
+      })
     } else {
-      alert('Draw!')
+      this.setState({draw: true})
     }
-
-    // this.getFighters();
-    this.clearContenders();
   }
   
   render() {
-    const {contenders, allFighters} = this.state;
+    const {contenders, allFighters, winnerName, winner, draw} = this.state;
     const {chooseContender, editName, replaceContender, battleFn, clearContenders} = this;
     console.log(contenders)
+
+    let header;
+
+    if (winner === true && draw === false) {
+      header = <WinHeader name={winnerName} clearFn={clearContenders} />
+    }else if(winner === false && draw === true) {
+      header = <DrawHeader clearFn={clearContenders} />
+    }else {
+      header = <Header />
+    }
     return (
       <section className="App">
-          <Header />
-          <Battlefield
-            contenders={contenders}
-            editNameFn={editName}
-            replaceFn={replaceContender}
-            battleFn={battleFn} />
+        {header}
+        <Battlefield
+          contenders={contenders}
+          editNameFn={editName}
+          replaceFn={replaceContender}
+          battleFn={battleFn} />
         <Fighters
           allFighters={allFighters}
           chooseFn={chooseContender}

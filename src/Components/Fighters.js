@@ -6,10 +6,10 @@ const Fighters = (props) => {
     return (
         <section>
             {length !== 2
-                ? (<h1 className='choose'>Choose Your Character!</h1>)
+                ? (<h2 className='choose'>Choose Your Character!</h2>)
                 : (<button className='reset' onClick={clearFn}>Reset Battlefield</button>)
             }
-            <div className='queue'>
+            <div className='queue flyUp'>
                 {allFighters.map((e, i) => (
                     <Queue
                         key={i}

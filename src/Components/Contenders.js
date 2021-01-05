@@ -5,7 +5,7 @@ class Contenders extends Component {
         super();
         this.state = {
             editing: false,
-            userInput: ''
+            userInput: '',
         }
     }
 
@@ -27,7 +27,7 @@ class Contenders extends Component {
         const {editing, userInput} = this.state;
         const {handleInput, handleToggle, handleEdit} = this;
         return (
-            <section className='contender'>
+            <section className='contender fadeIn'>
                 <p>HP: {contender.hp}</p>
                 <img src={contender.image} alt={contender.name} />
                 <div>

@@ -13,15 +13,15 @@ const Battlefield = (props) => {
                         editNameFn={editNameFn}
                         replaceFn={replaceFn} />
                 ))}
-                {/* <button className='battle-button'>BATTLE!</button> */}
             </div>
             {contenders.length === 2
                 ? (
                     <div 
-                        className='battle-button'
+                        className='battle-button fadeInDelay'
                         onClick={battleFn}></div>
                 )
                 : (null)}
+            <div className='feather'></div>
         </section>
     )
 }
