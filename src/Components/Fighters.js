@@ -2,13 +2,19 @@ import Queue from './Queue'
 
 const Fighters = (props) => {
     const {randFighters, chooseFn, length, clearFn} = props;
-    // console.log(randFighters);
+
+    let title;
+
+    if (length === 0) {
+        title = <h2 className='choose hidden'>Choose Your Character!</h2>;
+    }else if (length === 1) {
+        title = <h2 className='choose fadeIn'>Choose Your Character!</h2>
+    }else {
+        title = <button className='reset fadeInDelay' onClick={clearFn}>Reset Battlefield</button>
+    }
     return (
         <section>
-            {length !== 2
-                ? (<h2 className='choose'>Choose Your Character!</h2>)
-                : (<button className='reset' onClick={clearFn}>Reset Battlefield</button>)
-            }
+            { title }
             <div className='queue flyUp'>
                 {randFighters.map((e, i) => (
                     <Queue

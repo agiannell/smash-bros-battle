@@ -17,7 +17,6 @@ class Queue extends Component {
     render() {
         const {fighter, length} = this.props;
         const {handleClick} = this;
-        // console.log(length)
         return (
             <section>
                 {length < 2

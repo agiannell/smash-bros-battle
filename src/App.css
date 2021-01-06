@@ -21,10 +21,10 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 2;
 }
 
 .menu {
-  /* border: 2px dotted yellowgreen; */
   background-color: transparent;
   border: none;
   background-image: url(/src/img/menu-lines.svg);
@@ -35,16 +35,20 @@ body {
   box-sizing: border-box;
   right: 25px;
   z-index: 3;
-  transition: .5s cubic-bezier(.36, 0, .1, 1);
+  transition: .25s cubic-bezier(.36, 0, .1, 1);
 }
 
 .menu:hover {
-  transform: rotate(90deg);
+  transform: scale(1.2);
+  transform-origin: center;
+}
+
+.menu:active {
+  transform: scale(.85);
   transform-origin: center;
 }
 
 nav {
-  /* border: 2px dotted yellowgreen; */
   padding-right: 70px;
   position: fixed;
   top: 0;
@@ -100,7 +104,6 @@ nav button {
 }
 
 .win-gif {
-  /* border: 2px dotted yellowgreen; */
   height: 400px;
 }
 
@@ -119,7 +122,6 @@ nav button {
 }
 
 .draw-gif {
-  /* border: 2px dotted yellowgreen; */
   height: 350px;
 }
 
@@ -160,7 +162,6 @@ h2 {
 }
 
 .queue {
-  /* border: 2px dotted yellowgreen; */
   display: flex;
   box-sizing: border-box;
   justify-content: space-evenly;
@@ -168,13 +169,11 @@ h2 {
 }
 
 .queue img {
-  /* border: 2px dotted red; */
   height: 9vw;
   margin-bottom: 5px;
 }
 
 .fighter {
-  /* border: 2px dotted green; */
   transition: .15s ease;
 }
 
@@ -183,8 +182,12 @@ h2 {
   color: rgb(238, 255, 0);
 }
 
+.fighter:active {
+  transform: scale(1);
+  color: rgb(238, 255, 0);
+}
+
 .fighter-name {
-  /* border: 2px dotted green; */
   font-weight: bold;
   z-index: 1;
 }
@@ -198,16 +201,20 @@ h2 {
   font-family: 'Bangers', cursive;
   font-size: 2em;
   letter-spacing: .12em;
-  transition: .15s ease-in-out;
+  transition: .1s ease-in-out;
 }
 
 .reset:hover {
-  transform: scale(1.07);
+  transform: scale(1.05);
   background-color: #ff3738;
 }
 
+.reset:active {
+  transform: scale(.7);
+  background-color: #b92828;
+}
+
 .battlefield {
-  /* border: 2px dotted blue; */
   width: 100vw;
   height: 65vh;
   background-image: url(/src/img/sb-stage-2.jpg);
@@ -215,12 +222,32 @@ h2 {
   background-position: bottom;
   box-sizing: border-box;
   display: flex;
+  position: relative;
   align-items: center;
   margin-bottom: 20px;
 }
 
+.init {
+  width: 100vw;
+  height: 65vh;
+  background-color: rgba(37, 55, 83, .7);
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  position: relative;
+  align-items: center;
+}
+
+.init h1 {
+  width: 1500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+}
+
 .battlefield-div {
-  /* border: 2px dotted black; */
   width: 100vw;
   height: 50vh;
   margin: 20px 0;
@@ -228,19 +255,11 @@ h2 {
   padding-top: 1vw;
   box-sizing: border-box;
   display: flex;
+  position: relative;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
   z-index: 1;
-}
-
-.feather {
-  /* border: 2px dotted red; */
-  height: 70px;
-  width: 100vw;
-  position: fixed;
-  bottom: 339px;
-  background-image: linear-gradient(to top, rgb(37, 55, 83), rgba(37, 55, 83, 0));
 }
 
 .battle-button {
@@ -248,6 +267,8 @@ h2 {
   width: 15vw;
   background-image: url(/src/img/battle-button-1.svg);
   background-size: cover;
+  background-color: transparent;
+  border: none;
   box-sizing: border-box;
   z-index: 1;
   position: absolute;
@@ -265,7 +286,7 @@ h2 {
 }
 
 .fadeInDelay {
-  animation: fadeInDelayAnimation 1s;
+  animation: fadeInDelayAnimation .7s;
 }
 
 @keyframes fadeInDelayAnimation {
@@ -303,16 +324,34 @@ h2 {
   }
 }
 
+.flyRight {
+  animation: flyRightAnimation .7s cubic-bezier(.7, .12, .6, 1.7);
+}
+
+@keyframes flyRightAnimation {
+  from { 
+    margin-right: 500px;
+    opacity: 0; 
+  }
+  to { 
+    margin-right: 0; 
+    opacity: 1;
+  }
+}
+
 .battle-button:hover {
   background-image: url(/src/img/battle-button-2.svg);
   transform: scale(1.1);
 }
 
+.battle-button:active {
+  transform: scale(1);
+}
+
 .contender {
-  /* border: 2px dotted blue; */
-  /* height: 20vw; */
   width: 20vw;
   display: flex;
+  position: relative;
   box-sizing: border-box;
   flex-direction: column;
   justify-content: space-evenly;
@@ -320,7 +359,6 @@ h2 {
 }
 
 .contender img {
-  /* border: 2px dotted red; */
   height: 200px;
   margin: 4% 0;
   background-color: rgba(0, 0, 0, .68);
@@ -336,8 +374,6 @@ h2 {
 }
 
 .cont-buttons {
-  /* border: 2px dotted yellowgreen; */
-  /* height: 7vw; */
   width: 20vw;
   box-sizing: border-box;
   display: flex;
@@ -368,6 +404,10 @@ h2 {
   background-color: rgb(100, 187, 126);
 }
 
+.contender button:active {
+  background-color: rgb(43, 121, 66);
+}
+
 .cont-buttons input {
   padding: 2% 2%;
   margin-right: 2px;
@@ -375,7 +415,6 @@ h2 {
 }
 
 .all-fighters-container {
-  /* border: 2px dotted yellowgreen; */
   height: 100vh;
   width: 100vw;
   margin: 0 0;
@@ -391,6 +430,7 @@ h2 {
   font-family: 'Bangers', cursive;
   font-size: 3em;
   letter-spacing: .12em;
+  z-index: 10;
 }
 
 .all-fighters {
@@ -402,7 +442,6 @@ h2 {
 }
 
 .indiv-fighters {
-  /* border: 2px dotted red; */
   margin: 10px 20px;
   font-weight: bold;
   box-sizing: border-box;
@@ -426,4 +465,8 @@ h2 {
     margin-bottom: 0; 
     opacity: 1;
   }
+}
+
+.hidden {
+  visibility: hidden;
 }

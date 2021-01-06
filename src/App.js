@@ -103,7 +103,6 @@ class App extends Component {
   render() {
     const {contenders, randFighters, winnerName, winner, draw} = this.state;
     const {chooseContender, editName, replaceContender, battleFn, clearContenders} = this;
-    console.log(contenders)
 
     let header;
 
@@ -114,6 +113,7 @@ class App extends Component {
     }else {
       header = <Header />
     }
+    
     return (
       <section className="App">
         {header}
