@@ -2,7 +2,7 @@
 
 ## Technologies
 
-This project built with React, Node.js, and Express.
+This project was built with React, Node.js, and Express.
 
 ## Use
 
