@@ -1,12 +1,12 @@
-import {Component} from 'react';
-import Header from './Components/Header'
-import WinHeader from './Components/WinHeader'
-import DrawHeader from './Components/DrawHeader'
-import Battlefield from './Components/Battlefield'
-import Fighters from './Components/Fighters'
-import './reset.css';
-import './App.css';
-import axios from 'axios';
+import { Component } from "react";
+import Header from "./Components/Header";
+import WinHeader from "./Components/WinHeader";
+import DrawHeader from "./Components/DrawHeader";
+import Battlefield from "./Components/Battlefield";
+import Fighters from "./Components/Fighters";
+import "./reset.css";
+import "./App.css";
+import axios from "axios";
 
 class App extends Component {
   constructor() {
@@ -15,105 +15,117 @@ class App extends Component {
       randFighters: [],
       allFighters: [],
       contenders: [],
-      winnerName: '',
+      winnerName: "",
       winner: false,
       draw: false,
-    }
+    };
   }
 
   componentDidMount() {
-    this.getFighters()
-    this.getContenders()
+    this.getFighters();
+    this.getContenders();
   }
 
   getContenders = () => {
-    axios.get('/api/contenders')
-      .then(res => {
-        this.setState({contenders: res.data});
+    axios
+      .get("/api/contenders")
+      .then((res) => {
+        this.setState({ contenders: res.data });
       })
-      .catch(err => console.log(err));
-  }
+      .catch((err) => console.log(err));
+  };
 
   getFighters = () => {
-    axios.get('/api/fighters')
-        .then(res => {
-            this.setState({randFighters: res.data})
-        })
-        .catch(err => console.log(err));
-}
+    axios
+      .get("/api/fighters")
+      .then((res) => {
+        this.setState({ randFighters: res.data });
+      })
+      .catch((err) => console.log(err));
+  };
 
   chooseContender = (contender) => {
-    axios.post('/api/contenders', {contender: contender})
-      .then(res => {
-        this.setState({contenders: res.data});
+    axios
+      .post("/api/contenders", { contender: contender })
+      .then((res) => {
+        this.setState({ contenders: res.data });
       })
-      .catch(err => console.log(err));
-  }
+      .catch((err) => console.log(err));
+  };
 
   editName = (id, newName) => {
-    let body = {name: newName};
+    let body = { name: newName };
 
-    axios.put(`/api/contenders/${id}`, body)
-      .then(res => {
-        this.setState({contenders: res.data});
+    axios
+      .put(`/api/contenders/${id}`, body)
+      .then((res) => {
+        this.setState({ contenders: res.data });
       })
-      .catch(err => console.log(err));
-  }
+      .catch((err) => console.log(err));
+  };
 
   replaceContender = (id) => {
-    axios.delete(`/api/contenders/${id}`)
-      .then(res => {
-        this.setState({contenders: res.data});
+    axios
+      .delete(`/api/contenders/${id}`)
+      .then((res) => {
+        this.setState({ contenders: res.data });
       })
-      .catch(err => console.log(err));
-  }
+      .catch((err) => console.log(err));
+  };
 
   clearContenders = () => {
-    axios.get('api/clear-contenders')
-      .then(res => {
+    axios
+      .get("api/clear-contenders")
+      .then((res) => {
         this.setState({
           contenders: res.data,
           winner: false,
-          draw: false
+          draw: false,
         });
       })
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
 
-      this.getFighters();
-  }
+    this.getFighters();
+  };
 
   battleFn = () => {
-    const {contenders} = this.state;
+    const { contenders } = this.state;
 
-    if(contenders[0].hp > contenders[1].hp) {
+    if (contenders[0].hp > contenders[1].hp) {
       this.setState({
         winnerName: contenders[0].name,
-        winner: true
-      })
-    } else if(contenders[0].hp < contenders[1].hp) {
+        winner: true,
+      });
+    } else if (contenders[0].hp < contenders[1].hp) {
       this.setState({
         winnerName: contenders[1].name,
-        winner: true
-      })
+        winner: true,
+      });
     } else {
-      this.setState({draw: true})
+      this.setState({ draw: true });
     }
-  }
-  
+  };
+
   render() {
-    const {contenders, randFighters, winnerName, winner, draw} = this.state;
-    const {chooseContender, editName, replaceContender, battleFn, clearContenders} = this;
+    const { contenders, randFighters, winnerName, winner, draw } = this.state;
+    const {
+      chooseContender,
+      editName,
+      replaceContender,
+      battleFn,
+      clearContenders,
+    } = this;
 
     let header;
 
     if (winner === true && draw === false) {
-      header = <WinHeader name={winnerName} clearFn={clearContenders} />
-    }else if(winner === false && draw === true) {
-      header = <DrawHeader clearFn={clearContenders} />
-    }else {
-      header = <Header />
+      header = <WinHeader name={winnerName} clearFn={clearContenders} />;
+    } else if (winner === false && draw === true) {
+      header = <DrawHeader clearFn={clearContenders} />;
+    } else {
+      header = <Header />;
     }
-    
+
     return (
       <section className="App">
         {header}
@@ -121,12 +133,14 @@ class App extends Component {
           contenders={contenders}
           editNameFn={editName}
           replaceFn={replaceContender}
-          battleFn={battleFn} />
+          battleFn={battleFn}
+        />
         <Fighters
           randFighters={randFighters}
           chooseFn={chooseContender}
           length={contenders.length}
-          clearFn={clearContenders} />
+          clearFn={clearContenders}
+        />
       </section>
     );
   }
