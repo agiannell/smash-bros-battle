@@ -1,33 +1,14 @@
-# Smash Bros. Battle Game
+# Welcome to your CDK TypeScript project
 
-## Technologies
+This is a blank project for CDK development with TypeScript.
 
-This project was built with React, Node.js, and Express.
+The `cdk.json` file tells the CDK Toolkit how to execute your app.
 
-## Use
+## Useful commands
 
-### Overview
-
-This is a simple game where the user can select two character to battle.
-Character HP is randomly generated upon selection. The character with the highest HP wins the battle.
-
-### Other Features
-
-- Users can edit player names, replace single players, and reset the entire battlefield.
-- Users can also view all available characters.
-
-## Getting Started
-
-- Clone down the repo
-- Install dependencies with `yarn`
-
-### Run Locally
-
-- Install `nodemon` globally if not installed
-  - `sudo npm i -g nodemon`
-
-- Run the server using `nodemon`
-  - Server will be running on `http://localhost:4002`
-
-- Run the React frontend with `yarn start`
-  - Frontend will be available on `http://localhost:3000`
+* `npm run build`   compile typescript to js
+* `npm run watch`   watch for changes and compile
+* `npm run test`    perform the jest unit tests
+* `npx cdk deploy`  deploy this stack to your default AWS account/region
+* `npx cdk diff`    compare deployed stack with current state
+* `npx cdk synth`   emits the synthesized CloudFormation template
