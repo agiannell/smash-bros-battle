@@ -1,0 +1,28 @@
+name: Sync Fighters
+
+on:
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    environment: production
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: us-west-2
+      - name: Invoke fighters-sync Lambda
+        run: |
+          aws lambda invoke \
+            --function-name smash-bros-fighters-sync \
+            --log-type Tail \
+            --query 'LogResult' \
+            --output text \
+            /tmp/response.json | base64 -d
+          echo "--- Response ---"
+          cat /tmp/response.json

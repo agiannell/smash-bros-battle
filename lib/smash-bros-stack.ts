@@ -36,6 +36,7 @@ export class SmashBrosStack extends cdk.Stack {
     })
 
     const fightersSyncFn = new lambdaNodejs.NodejsFunction(this, 'FightersSyncFunction', {
+      functionName: 'smash-bros-fighters-sync',
       entry: 'lambdas/fighters-sync/index.ts',
       handler: 'handler',
       runtime: lambda.Runtime.NODEJS_24_X,
@@ -57,6 +58,7 @@ export class SmashBrosStack extends cdk.Stack {
     })
 
     const fightersBackfillFn = new lambdaNodejs.NodejsFunction(this, 'FightersBackfillFunction', {
+      functionName: 'smash-bros-fighters-backfill',
       entry: 'lambdas/fighters-backfill/index.ts',
       handler: 'handler',
       runtime: lambda.Runtime.NODEJS_24_X,
