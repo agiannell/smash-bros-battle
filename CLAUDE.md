@@ -4,52 +4,89 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Commands
 
-**Install dependencies:**
+**Install root CDK dependencies:**
 ```
-yarn
-```
-
-**Start frontend (port 3000):**
-```
-yarn start
+yarn install
 ```
 
-**Start backend (port 4002) — requires nodemon globally installed:**
+**Install and build Next.js app (required before CDK deploy):**
 ```
-nodemon
-```
-
-**Build for production:**
-```
-yarn build
+yarn build:next
 ```
 
-**Run tests:**
+**Run Next.js app locally (requires AWS credentials + FIGHTERS_TABLE_NAME env var):**
 ```
-yarn test
+cd next-app && yarn dev
 ```
 
-Both servers must run concurrently during development. The React app proxies API requests to the Express backend at `http://localhost:4002`.
+**Type-check root (CDK + Lambda code):**
+```
+yarn typecheck
+```
+
+**Type-check Next.js app:**
+```
+cd next-app && yarn typecheck
+```
+
+**CDK commands:**
+```
+npx cdk synth        # synthesize CloudFormation template
+npx cdk diff         # compare deployed stack with current state
+npx cdk deploy       # full deploy (also runs build:next)
+```
 
 ## Architecture
 
-This is a turn-based browser game where players select two Super Smash Bros. characters from the Nintendo Amiibo API, each gets a random HP value (50–99), and the higher HP wins.
+This is an **AWS CDK v2** monorepo (TypeScript) that deploys a Next.js frontend, a DynamoDB table, and two Lambda functions to AWS. The frontend is the v2 rewrite of the Smash Bros. battle game.
 
-**Stack:**
-- Frontend: React 17 (class components throughout), Axios, plain CSS
-- Backend: Express 4 + Axios, no database — all state is in-memory
+**Entry point**: `bin/smash-bros-battle.ts` — instantiates `SmashBrosStack`.
+
+**Stack definition**: `lib/smash-bros-stack.ts` — DynamoDB table, weekly sync Lambda, one-time backfill Lambda, and the Next.js CloudFront distribution deployed to `smashbros.anthonygnl.com`.
+
+**Lambda functions**: `lambdas/<name>/index.ts` — bundled by `NodejsFunction` (esbuild). Both import from `lambdas/shared/amiibo.ts` for the Amiibo API fetch.
+
+**Next.js frontend**: `next-app/` — App Router, Tailwind CSS, TypeScript. Hosted via `cdk-nextjs-standalone` (OpenNext + CloudFront + S3).
+
+### DynamoDB Table (`smash-bros-fighters`)
+
+| Key | Type | Description |
+|---|---|---|
+| `pk` | String (PK) | Constant `"FIGHTER"` |
+| `id` | String (SK) | `head-tail` from Amiibo API (e.g. `"00000000-00000002"`) |
+| `name` | String | Canonical Amiibo name |
+| `image` | String | Amiibo image URL |
+| `created_at` | String | ISO timestamp, set on first insert |
+| `updated_at` | String | ISO timestamp, updated on every upsert |
+
+### Lambdas
+
+- **`fighters-sync`**: Runs every Monday at 12:00 UTC via EventBridge. Upserts all fighters from the Amiibo API (`amiiboapi.com/api/amiibo/?amiiboSeries=0x00`), preserving `created_at`.
+- **`fighters-backfill`**: Runs once at first deploy via CDK `Trigger` (`executeOnHandlerChange: false`). Same upsert logic.
+
+### Next.js App (`next-app/`)
 
 **Data flow:**
-1. Backend fetches fighters from `https://www.amiiboapi.com/api/amiibo/?amiiboSeries=0x00` via `allFightersCtrl.js`
-2. `chooseYourCtrl.js` manages a `contenders` array in server memory (add, remove, clear)
-3. `App.js` is the single source of truth on the frontend — it holds all game state and passes props down
-4. Components are purely presentational; all logic and API calls live in `App.js`
+1. `useFighters` hook fetches `GET /api/fighters` (5 random) and `GET /api/all-fighters` on mount
+2. API routes call `lib/getFighters.ts` which queries DynamoDB directly via `DynamoDBDocumentClient`
+3. `useGame` hook manages all client-side game state (contenders, winner, draw)
+4. Contenders are **client-state only** — no server persistence. User-edited names persist for the session and reset on clear.
 
 **Key files:**
-- `server/index.js` — Express app, route definitions, serves `build/` in production
-- `server/controllers/allFightersCtrl.js` — fighter fetch + random selection
-- `server/controllers/chooseYourCtrl.js` — contender CRUD
-- `src/Components/App.js` — root component, all state and handlers
-- `src/App.css` — all styles (~471 lines, includes animations)
+- `app/game/Game.tsx` — `'use client'` root, composes `useGame` + `useFighters`, renders header + battlefield + fighters
+- `app/game/hooks/useGame.ts` — all game state and handlers (contenders, battle logic, clear)
+- `app/game/hooks/useFighters.ts` — fighter data fetching and refetch-on-reset
+- `app/lib/getFighters.ts` — DynamoDB query (server-side); paginates with `do/while` + `LastEvaluatedKey`
+- `app/lib/types.ts` — `Fighter` and `Contender` interfaces
+- `app/globals.css` — Tailwind directives + background image classes (battlefield, buttons)
+- `next-app/tailwind.config.ts` — custom animations (`flyUp`, `flyRight`, `flyDown`, `fadeIn`, `fadeInDelay`, `growIn`)
 
-**Header variants** (`Header.js`, `WinHeader.js`, `DrawHeader.js`) are conditionally rendered by `App.js` based on game state. `WinHeader.js` fetches a celebration GIF from the Giphy API.
+**Environment variable**: `FIGHTERS_TABLE_NAME` — injected at runtime by the CDK `Nextjs` construct. Not available at Next.js build time. The `/api/fighters` route uses `export const dynamic = 'force-dynamic'` to ensure each request gets a fresh random selection.
+
+## Gotchas
+
+- **CDK tests must pass `skipFrontend: true`**: `cdk-nextjs-standalone` triggers a full Next.js build during `Template.fromStack()`. Pass `skipFrontend: true` to skip this during test synthesis.
+- **`next-app/.npmrc` pins the registry**: Overrides a global Yarn/npm config that may point to a private registry, avoiding 401s in CI.
+- **Fighter images use `<img>` not `next/image`**: The Amiibo image URLs are `raw.githubusercontent.com` paths; `next/image` is allowed-listed in `next.config.ts` but `<img>` is used to match v1 behavior.
+- **HP generation is client-side**: `Math.ceil(Math.random() * 49 + 50)` in `useGame.chooseContender`. Range: 51–99.
+- **Battle logic is client-side**: `battleFn` in `useGame` — no server round-trip.
