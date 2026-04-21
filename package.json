@@ -1,42 +1,35 @@
 {
   "name": "smash-bros-battle",
-  "version": "1.0.0",
-  "private": true,
-  "main": "server/index.js",
-  "proxy": "http://localhost:4002",
-  "dependencies": {
-    "@testing-library/jest-dom": "^5.11.8",
-    "@testing-library/react": "^11.2.2",
-    "@testing-library/user-event": "^12.6.0",
-    "axios": "^0.21.1",
-    "express": "^4.17.1",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
-    "react-scripts": "4.0.1",
-    "web-vitals": "^0.2.4"
+  "version": "2.0.0",
+  "bin": {
+    "smash-bros-battle": "build/bin/smash-bros-battle.js"
   },
+  "license": "MIT",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "build": "tsc",
+    "watch": "tsc -w",
+    "typecheck": "tsc --noEmit",
+    "test": "node --import=tsx node_modules/.bin/mocha 'test/**/*.test.ts'",
+    "cdk": "cdk",
+    "build:next": "cd next-app && yarn install --frozen-lockfile && yarn build",
+    "deploy": "npm run build:next && npx cdk deploy"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+  "devDependencies": {
+    "@types/chai": "^5.2.3",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^24.10.1",
+    "aws-cdk": "2.1110.0",
+    "chai": "^6.2.2",
+    "esbuild": "^0.27.3",
+    "mocha": "^11.7.5",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.21.0",
+    "typescript": "~5.9.3"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.1030.0",
+    "aws-cdk-lib": "^2.241.0",
+    "cdk-nextjs-standalone": "^4.3.3",
+    "constructs": "^10.5.0"
   }
 }

@@ -1,0 +1,72 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-navy text-white text-center font-noto;
+  }
+
+  h1 {
+    @apply font-bangers text-9xl tracking-widest;
+  }
+
+  h2 {
+    @apply text-2xl font-bold;
+  }
+}
+
+/* Background image and shared component classes — not expressible as Tailwind utilities */
+
+.btn-green {
+  padding: 2% 5%;
+  margin: 0 5px;
+  background-color: rgb(54, 153, 83);
+  color: white;
+  border: none;
+  font-family: var(--font-noto), sans-serif;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.15s ease-in-out;
+}
+
+.btn-green:hover {
+  background-color: rgb(100, 187, 126);
+}
+
+.btn-green:active {
+  background-color: rgb(43, 121, 66);
+}
+
+/* Background image classes — not expressible as Tailwind utilities */
+.battlefield-bg {
+  background-image: url('/sb-stage-2.jpg');
+  background-size: cover;
+  background-position: bottom;
+}
+
+.btn-battle {
+  background-image: url('/battle-button-1.svg');
+  background-size: cover;
+  background-color: transparent;
+  border: none;
+}
+
+.btn-battle:hover {
+  background-image: url('/battle-button-2.svg');
+}
+
+.btn-close {
+  background-image: url('/close-button.svg');
+  background-size: cover;
+  background-color: transparent;
+  border: none;
+}
+
+.btn-menu {
+  background-image: url('/menu-lines.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  border: none;
+}
