@@ -13,11 +13,12 @@ export async function handler(): Promise<void> {
     await upsertFighters(tableName, fighters)
     console.log(`Backfill complete: ${fighters.length} fighters written`)
   } catch (err) {
-    console.error('fighters-backfill failed', {
+    // Log but do not re-throw — a failed backfill must not roll back the CFN stack.
+    // The weekly fighters-sync Lambda will populate the table on its next run.
+    console.error('fighters-backfill failed — table will be populated by weekly sync', {
       tableName,
       error: err instanceof Error ? err.message : String(err),
       stack: err instanceof Error ? err.stack : undefined,
     })
-    throw err
   }
 }
