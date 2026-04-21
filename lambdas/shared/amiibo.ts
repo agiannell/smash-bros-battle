@@ -23,7 +23,7 @@ function isValidAmiiboFighter(item: unknown): item is AmiiboFighter {
 }
 
 export async function fetchSmashFighters(): Promise<AmiiboFighter[]> {
-  const res = await fetch(AMIIBO_API_URL)
+  const res = await fetch(AMIIBO_API_URL, { signal: AbortSignal.timeout(30_000) })
   if (!res.ok) throw new Error(`Amiibo API error: ${res.status} ${res.statusText}`)
   const data = (await res.json()) as AmiiboApiResponse
   if (!data.amiibo || data.amiibo.length === 0) {
