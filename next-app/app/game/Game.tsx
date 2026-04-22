@@ -6,9 +6,15 @@ import { Battlefield } from '../components/Battlefield'
 import { Fighters } from '../components/Fighters'
 import { useGame } from './hooks/useGame'
 import { useFighters } from './hooks/useFighters'
+import type { Fighter } from '../lib/types'
 
-export function Game() {
-  const { randFighters, allFighters, refetchRandom, fetchError } = useFighters()
+interface GameProps {
+  initialRandFighters: Fighter[]
+  initialAllFighters: Fighter[]
+}
+
+export function Game({ initialRandFighters, initialAllFighters }: GameProps) {
+  const { randFighters, allFighters, refetchRandom, fetchError } = useFighters(initialRandFighters, initialAllFighters)
   const { contenders, result, chooseContender, editName, replaceContender, clearContenders, battleFn } =
     useGame(refetchRandom)
 

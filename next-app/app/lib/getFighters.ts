@@ -1,5 +1,6 @@
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb'
 import { DynamoDBDocumentClient, QueryCommand } from '@aws-sdk/lib-dynamodb'
+import { unstable_cache } from 'next/cache'
 import type { Fighter } from './types'
 
 const client = DynamoDBDocumentClient.from(new DynamoDBClient({ region: 'us-west-2' }))
@@ -12,7 +13,7 @@ function toFighter(item: Record<string, unknown>): Fighter | null {
   return { id: item.id, name: item.name, image: item.image }
 }
 
-export async function getAllFighters(): Promise<Fighter[]> {
+async function queryAllFighters(): Promise<Fighter[]> {
   const tableName = process.env.FIGHTERS_TABLE_NAME
   if (!tableName) throw new Error('FIGHTERS_TABLE_NAME environment variable is not set')
 
@@ -51,12 +52,17 @@ export async function getAllFighters(): Promise<Fighter[]> {
   return fighters
 }
 
+// Cache the DynamoDB query for 24h — the fighter list only changes on weekly sync.
+// Random selection still happens per-request using this cached result.
+export const getAllFighters = unstable_cache(queryAllFighters, ['all-fighters'], { revalidate: 86400 })
+
 export async function getRandomFighters(count: number = 5): Promise<Fighter[]> {
   const all = await getAllFighters()
   // Fisher-Yates shuffle
-  for (let i = all.length - 1; i > 0; i--) {
+  const shuffled = [...all]
+  for (let i = shuffled.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
-    ;[all[i], all[j]] = [all[j], all[i]]
+    ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
   }
-  return all.slice(0, count)
+  return shuffled.slice(0, count)
 }
