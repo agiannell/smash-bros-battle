@@ -65,7 +65,7 @@ type GameResult = { kind: 'win'; name: string } | { kind: 'draw' }
 
 ## Gotchas
 
-- **`FIGHTERS_TABLE_NAME`** is injected at runtime by CDK — not available at build time
+- **`FIGHTERS_TABLE_NAME`** is injected at runtime by CDK — not available at build time. Any page or route that calls `getFighters` must use `export const dynamic = 'force-dynamic'` (or equivalent) to prevent Next.js from attempting a static prerender, which would fail with a CDK Token validation error
 - **`/api/fighters` uses `force-dynamic`** so each request gets a fresh random selection
 - **`/api/all-fighters` uses `revalidate: 86400`** (24h ISR) — full fighter list changes rarely
 - **Fighter images use `<img>` not `next/image`** — matches v1 behavior; `raw.githubusercontent.com` is allow-listed in `next.config.ts` but `<img>` is used directly
