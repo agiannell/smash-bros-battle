@@ -1,6 +1,6 @@
 import * as https from 'node:https'
 
-const AMIIBO_API_URL = 'https://www.amiiboapi.com/api/amiibo/?amiiboSeries=0x00'
+const AMIIBO_API_URL = 'https://www.amiiboapi.org/api/amiibo/?amiiboSeries=0x00'
 const REQUEST_TIMEOUT_MS = 30_000
 
 export interface AmiiboFighter {
