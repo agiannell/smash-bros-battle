@@ -1,4 +1,5 @@
 import { Contenders } from './Contenders'
+import { BattleButton } from './BattleButton'
 import type { Contender } from '../lib/types'
 
 interface BattlefieldProps {
@@ -30,11 +31,7 @@ export function Battlefield({ contenders, editNameFn, replaceFn, battleFn }: Bat
             ))}
           </div>
           {contenders.length === 2 && (
-            <button
-              className="btn-battle h-[15vw] w-[15vw] z-10 absolute left-[42vw] transition-transform duration-150 ease-in-out hover:scale-110 active:scale-100 animate-fadeInDelay"
-              onClick={battleFn}
-              aria-label="Battle!"
-            />
+            <BattleButton onClick={battleFn} />
           )}
         </section>
       )}
