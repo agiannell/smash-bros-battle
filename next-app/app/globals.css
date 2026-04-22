@@ -45,17 +45,6 @@
   background-position: bottom;
 }
 
-.btn-battle {
-  background-image: url('/battle-button-1.svg');
-  background-size: cover;
-  background-color: transparent;
-  border: none;
-}
-
-.btn-battle:hover {
-  background-image: url('/battle-button-2.svg');
-}
-
 .btn-close {
   background-image: url('/close-button.svg');
   background-size: cover;
