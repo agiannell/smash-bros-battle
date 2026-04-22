@@ -24,5 +24,9 @@ jobs:
         with:
           role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
           aws-region: us-west-2
+      - name: Clean up stale log groups
+        run: |
+          aws logs delete-log-group --log-group-name /aws/lambda/smash-bros-fighters-sync --region us-west-2 2>/dev/null || true
+          aws logs delete-log-group --log-group-name /aws/lambda/smash-bros-fighters-backfill --region us-west-2 2>/dev/null || true
       - name: Deploy CDK stack
         run: npx cdk deploy --require-approval never
