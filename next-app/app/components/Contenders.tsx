@@ -22,12 +22,12 @@ export function Contenders({ contender, editNameFn, replaceFn }: ContendersProps
 
   return (
     <section className="w-[20vw] flex relative box-border flex-col justify-evenly items-center animate-fadeIn">
-      <p className="font-bangers text-3xl tracking-widest z-0">HP: {contender.hp}</p>
+      <p className="font-bangers text-3xl tracking-widest relative z-10">HP: {contender.hp}</p>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={contender.image}
         alt={contender.name}
-        className="h-[200px] my-[4%] bg-black/70 shadow-[0_0_100px_100px_rgba(0,0,0,0.7)] z-[-1]"
+        className="h-[200px] my-[4%] bg-black/70 shadow-[0_0_100px_100px_rgba(0,0,0,0.7)]"
       />
       <div>
         {editing ? (
@@ -42,7 +42,7 @@ export function Contenders({ contender, editNameFn, replaceFn }: ContendersProps
           </div>
         ) : (
           <div>
-            <p className="font-bangers text-3xl tracking-widest z-0">{contender.name}</p>
+            <p className="font-bangers text-3xl tracking-widest">{contender.name}</p>
             <div className="w-[20vw] box-border flex flex-row items-center justify-center">
               <button onClick={() => setEditing(true)} className="btn-green">Edit Name</button>
               <button onClick={() => replaceFn(contender.slot)} className="btn-green">Replace</button>
