@@ -11,8 +11,16 @@ export function AllFighters({ allFighters }: AllFightersProps) {
       <div className="overflow-y-scroll flex flex-wrap mx-[30px] my-[15px] box-border h-[calc(100vh-80px)]">
         {allFighters.map(f => (
           <section key={f.id} className="m-[10px_20px] font-bold box-border">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={f.image} alt={f.name} className="h-[100px] my-[5px]" />
+            <div className="w-[83px] h-[100px] my-[5px] flex items-center justify-center">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={f.image}
+                alt={f.name}
+                loading="lazy"
+                decoding="async"
+                className="max-h-full max-w-full object-contain"
+              />
+            </div>
             <p>{f.name}</p>
           </section>
         ))}
