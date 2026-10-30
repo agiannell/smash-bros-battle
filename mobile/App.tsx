@@ -1,35 +1,88 @@
 import './global.css'
 import { StatusBar } from 'expo-status-bar'
-import { Text, View } from 'react-native'
+import { ScrollView, Text, View, useWindowDimensions } from 'react-native'
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 import { useFonts } from 'expo-font'
 // Import single weights from their subpaths. The package roots re-export every
 // weight, which makes Metro bundle all of them (~56MB for Noto Sans KR alone).
 import { Bangers_400Regular } from '@expo-google-fonts/bangers/400Regular'
 import { NotoSansKR_400Regular } from '@expo-google-fonts/noto-sans-kr/400Regular'
 import Logo from './assets/icons/smash-logo-white.svg'
-import { config } from './src/config'
+import { BattleButton } from './src/components/BattleButton'
+import { Contenders } from './src/components/Contenders'
+import { Fighters } from './src/components/Fighters'
+import { ResultHeader } from './src/components/ResultHeader'
 import { useFighters } from './src/game/useFighters'
+import { useGame } from './src/game/useGame'
 
-// Temporary checkpoint screen (replaced by the real game UI in Phase 3).
+// Temporary harness for the leaf components (replaced by Battlefield/Header/Game in later Phase 3 steps).
 export default function App() {
   const [fontsLoaded] = useFonts({ Bangers_400Regular, NotoSansKR_400Regular })
-  const { randFighters, allFighters, loading, fetchError } = useFighters()
+  const { width, height } = useWindowDimensions()
+  const { randFighters, loading, fetchError, refetchRandom } = useFighters()
+  const { contenders, result, chooseContender, editName, replaceContender, clearContenders, battleFn } =
+    useGame(refetchRandom)
 
   if (!fontsLoaded) return null
 
+  const landscape = width > height
+  // Two contenders means the queue is gone, so there's room to spread things out.
+  const roomy = contenders.length === 2
+
   return (
-    <View className="flex-1 items-center justify-center bg-navy px-6">
-      <Logo width={240} height={78} />
-      <Text className="mt-8 font-bangers text-5xl tracking-widest text-white">Smash Bros Battle</Text>
-      <Text className="mt-4 text-center font-noto text-base text-white">
-        Expo + NativeWind are running. API: {config.apiBaseUrl}
-      </Text>
-      <Text className="mt-6 text-center font-noto text-lg text-white">
-        {loading
-          ? 'Loading fighters...'
-          : (fetchError ?? `${randFighters.length} random, ${allFighters.length} total (${randFighters[0]?.name})`)}
-      </Text>
-      <StatusBar style="light" />
-    </View>
+    <SafeAreaProvider>
+      <SafeAreaView className="flex-1 bg-navy">
+        <ScrollView contentContainerClassName="items-center px-4 py-6" keyboardShouldPersistTaps="handled">
+          {!landscape && <Logo width={200} height={65} />}
+          {loading && <Text className="mt-6 font-noto text-white">Loading fighters...</Text>}
+          {fetchError && <Text className="mt-6 text-center font-noto text-red-400">{fetchError}</Text>}
+          <View
+            className={`mt-10 w-full ${landscape ? 'flex-row items-center justify-around' : ''}`}
+          >
+            {contenders[0] && (
+              <Contenders
+                contender={contenders[0]}
+                editNameFn={editName}
+                replaceFn={replaceContender}
+                horizontal={!landscape}
+              />
+            )}
+            {contenders.length >= 1 && (
+              <View className={`items-center ${roomy ? 'my-8' : 'my-4'}`}>
+                <BattleButton
+                  onPress={battleFn}
+                  disabled={!roomy}
+                  size={roomy ? (landscape ? 130 : 150) : 100}
+                />
+              </View>
+            )}
+            {contenders[1] && (
+              <Contenders
+                contender={contenders[1]}
+                editNameFn={editName}
+                replaceFn={replaceContender}
+                horizontal={!landscape}
+              />
+            )}
+          </View>
+          <View className={`w-full ${roomy ? 'mt-10' : 'mt-6'}`}>
+            <Fighters
+              randFighters={randFighters}
+              chooseFn={chooseContender}
+              contendersCount={contenders.length}
+              clearFn={clearContenders}
+            />
+          </View>
+        </ScrollView>
+        {result && (
+          <ResultHeader
+            kind={result.kind}
+            name={result.kind === 'win' ? result.name : undefined}
+            clearFn={clearContenders}
+          />
+        )}
+        <StatusBar style="light" />
+      </SafeAreaView>
+    </SafeAreaProvider>
   )
 }

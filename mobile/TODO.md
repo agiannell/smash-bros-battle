@@ -67,22 +67,23 @@ Items are in dependency order. **Checkpoints** (🚩) are hard gates — don't s
 *Build bottom-up; check each on the device before moving on. Get **portrait** correct first, then add landscape — don't fight both at once.*
 
 - [ ] `src/components/Queue.tsx` — one selectable fighter card. `<Pressable>` + `expo-image`; returns `null` at 2 contenders.
-- [ ] `src/components/Fighters.tsx` — horizontal `FlatList` of the 5 random fighters; swaps to the "Reset Battlefield" button at 2 contenders.
-- [ ] `src/components/Contenders.tsx` — HP, image, name, `<TextInput>` inline edit + Submit, Edit Name / Replace buttons. Drop the `shadow-[0_0_100px_100px_...]` (iOS shadows have no spread).
-- [ ] `src/components/BattleButton.tsx` — `react-native-svg` shield from the 4-segment `SHIELD_PATH`, `<Pressable>` with `onPressIn`/`onPressOut` swapping `#666` ↔ `#ff3837`.
+- [ ] `src/components/Fighters.tsx` — a non-scrolling grid of `config.queueSize` = 6 fighters, fetched via `GET /api/fighters?count=6`: large 2-column grid on the empty landing screen, compact 3-column grid (6 across in landscape) once a fighter is chosen so nothing needs vertical scrolling; names wrap to 2 lines; swaps to the "Reset Battlefield" button at 2 contenders. The landing screen shows the "Choose Your Character!" heading plus a one-line instruction ("Pick two fighters, then hit BATTLE. The higher HP wins!") — on the web the empty-state prompt lives in Battlefield and this heading is invisible until the first pick.
+- [ ] `src/components/Contenders.tsx` — HP, image, name, `<TextInput>` inline edit + Submit, Edit Name / Replace buttons. The web's `shadow-[0_0_100px_100px_...]` halo becomes an SVG radial-gradient glow behind the image (iOS shadows have no spread; hard black boxes looked wrong). `horizontal` prop: compact image-left / details-right row in portrait, vertical column in landscape.
+- [ ] `src/components/BattleButton.tsx` — first appears after the first fighter is chosen; gray and disabled until two contenders are loaded, red when live (darker red while pressed); `react-native-svg` shield from the 4-segment `SHIELD_PATH`, `<Pressable>` with `onPressIn`/`onPressOut` swapping `#666` ↔ `#ff3837`.
   - ⚠️ Render the "BATTLE!" label as an RN `<Text>` layered over the SVG rather than as SVG `<text>` — keeps the Bangers font reliable.
-- [ ] `src/components/Battlefield.tsx` — `<ImageBackground>` with `sb-stage-2.jpg`; empty state ("Choose Your Character!") vs 2-up contender layout + `BattleButton`.
+- [ ] `src/components/Battlefield.tsx` — `<ImageBackground>` with `sb-stage-2.jpg`; empty state ("Choose Your Character!") vs contender layout + `BattleButton`. **Portrait stacks the contenders vertically with the BATTLE shield between them; landscape puts them side by side with the shield in the middle** (the temporary `App.tsx` harness already does this with `useWindowDimensions`).
 - [ ] `src/components/Header.tsx` — top bar with logo + hamburger, inside `SafeAreaView` insets.
 - [ ] `src/components/Menu.tsx` — `<Modal transparent>` dropdown with "See All Characters".
 - [ ] `src/components/AllFighters.tsx` — full-roster grid as a `FlatList` with `numColumns`, `expo-image` with `cachePolicy="memory-disk"` and `recyclingKey={fighter.id}`.
   - ⚠️ Not a `ScrollView` of 90 images. `FlatList` windowing is the RN equivalent of the web's `loading="lazy"`.
   - ⚠️ Changing `numColumns` requires changing the `FlatList` `key` to force a re-render.
-- [ ] `src/components/ResultHeader.tsx` — full-screen `<Modal>`; green `rgba(54,153,83,0.9)` win / red `rgba(255,0,0,0.9)` draw; Giphy GIFs via `expo-image` (animates them); close button.
+- [ ] `src/components/ResultHeader.tsx` — full-screen `<Modal>`; green `rgba(54,153,83,0.9)` win / red `rgba(255,0,0,0.9)` draw; Giphy GIFs via `expo-image` (animates them); close button, placed **below the text** (the top-right corner is covered by Expo Go's floating dev-menu button, so taps never reached an X there). (Ported early in the leaf-components PR after device testing showed the plain-text result was too easy to miss.)
 - [ ] `App.tsx` — compose `useFighters` + `useGame` (passing `refetchRandom` as `onReset`), header/result switch, error banner, `Battlefield`, `Fighters`. Keep the `result satisfies never` exhaustiveness check from `Game.tsx`.
+- [ ] **Deploy dependency:** mobile requests `/api/fighters?count=6`. Until PR #13 (optional `count` param) is merged and deployed the server ignores it and returns 5, which the grid tolerates; after deploy the queue fills to 6.
 - [ ] Wire pull-to-refresh to `useFighters().reload` (e.g. `RefreshControl` on the fighter list). The hook's error copy says "Pull to retry", so this has to exist. Also use `loading` for the initial state.
 - [ ] Replace every `hover:` variant with `active:` / `Pressable` press state.
-- [ ] Decide the `vw`/`vh` strategy: test whether NativeWind v4 viewport units update on rotation. If not, switch those sizes to `useWindowDimensions()` + inline styles.
-  - **Done when:** the decision is made deliberately and applied consistently, not left half-and-half.
+- [x] **`vw`/`vh` decision: don't port them.** The web sizes (`h-[9vw]`, `w-[20vw]`, ...) are tuned for desktop widths; on a ~390pt phone `9vw` is ~35pt, too small to tap. Mobile uses fixed point sizes (Tailwind scale / explicit numbers) and `useWindowDimensions()` only where orientation changes the layout. This also avoids depending on NativeWind viewport units updating on rotation.
+- [x] Shared helpers the leaf components need: `src/components/GreenButton.tsx` (replaces the `.btn-green` CSS class) and `src/components/FighterImage.tsx` (`expo-image` with `memory-disk` caching; reused by the all-fighters grid).
 - [ ] Add landscape layouts — reflow the contender pair and the all-fighters `numColumns`.
 - [ ] 🚩 **Checkpoint — full manual pass on device** (see "Verification" in `PLAN.md`), **rotating the device at every step**.
 
