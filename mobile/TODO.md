@@ -54,13 +54,13 @@ Items are in dependency order. **Checkpoints** (🚩) are hard gates — don't s
 
 ## Phase 2 — Data layer and game logic
 
-- [ ] `mobile/src/lib/types.ts` — verbatim copy of `next-app/app/lib/types.ts` (`Fighter`, `Contender`).
+- [x] `mobile/src/lib/types.ts` — verbatim copy of `next-app/app/lib/types.ts` (`Fighter`, `Contender`).
 - [ ] `mobile/src/lib/api.ts` — `getRandomFighters()` and `getAllFighters()` over `fetch`, based on `config.apiBaseUrl` from `src/config.ts`, throwing on non-2xx.
   - **Done when:** a temporary `console.log` in `App.tsx` prints 5 fighters and ~90 fighters from the device.
-- [ ] `mobile/src/game/useGame.ts` — verbatim copy of `next-app/app/game/hooks/useGame.ts`. No changes; it has zero platform imports.
+- [x] `mobile/src/game/useGame.ts` — verbatim copy of `next-app/app/game/hooks/useGame.ts`. No changes; it has zero platform imports.
   - Preserve exactly: HP `Math.ceil(Math.random() * 49 + 50)` (51–99), slot re-indexing in `replaceContender`, higher-HP-wins / equal-is-draw in `battleFn`, `onReset` firing on replace **and** clear.
-- [ ] `mobile/src/game/useFighters.ts` — adapted from the web hook: fetches both lists on mount via `Promise.all` with a loading state (no server-rendered seed props on mobile), and mobile-appropriate error copy.
-- [ ] `cd mobile && npx tsc --noEmit` passes.
+- [x] `mobile/src/game/useFighters.ts` — adapted from the web hook: fetches both lists on mount via `Promise.all` with a loading state (no server-rendered seed props on mobile), and mobile-appropriate error copy.
+- [x] `cd mobile && npx tsc --noEmit` passes.
 
 ## Phase 3 — UI components
 
@@ -79,6 +79,7 @@ Items are in dependency order. **Checkpoints** (🚩) are hard gates — don't s
   - ⚠️ Changing `numColumns` requires changing the `FlatList` `key` to force a re-render.
 - [ ] `src/components/ResultHeader.tsx` — full-screen `<Modal>`; green `rgba(54,153,83,0.9)` win / red `rgba(255,0,0,0.9)` draw; Giphy GIFs via `expo-image` (animates them); close button.
 - [ ] `App.tsx` — compose `useFighters` + `useGame` (passing `refetchRandom` as `onReset`), header/result switch, error banner, `Battlefield`, `Fighters`. Keep the `result satisfies never` exhaustiveness check from `Game.tsx`.
+- [ ] Wire pull-to-refresh to `useFighters().reload` (e.g. `RefreshControl` on the fighter list). The hook's error copy says "Pull to retry", so this has to exist. Also use `loading` for the initial state.
 - [ ] Replace every `hover:` variant with `active:` / `Pressable` press state.
 - [ ] Decide the `vw`/`vh` strategy: test whether NativeWind v4 viewport units update on rotation. If not, switch those sizes to `useWindowDimensions()` + inline styles.
   - **Done when:** the decision is made deliberately and applied consistently, not left half-and-half.
