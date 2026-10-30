@@ -8,8 +8,7 @@ import { useFonts } from 'expo-font'
 import { Bangers_400Regular } from '@expo-google-fonts/bangers/400Regular'
 import { NotoSansKR_400Regular } from '@expo-google-fonts/noto-sans-kr/400Regular'
 import Logo from './assets/icons/smash-logo-white.svg'
-import { BattleButton } from './src/components/BattleButton'
-import { Contenders } from './src/components/Contenders'
+import { Battlefield } from './src/components/Battlefield'
 import { Fighters } from './src/components/Fighters'
 import { ResultHeader } from './src/components/ResultHeader'
 import { useFighters } from './src/game/useFighters'
@@ -32,40 +31,17 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <SafeAreaView className="flex-1 bg-navy">
-        <ScrollView contentContainerClassName="items-center px-4 py-6" keyboardShouldPersistTaps="handled">
+        <ScrollView contentContainerClassName="items-center py-6" keyboardShouldPersistTaps="handled">
           {!landscape && <Logo width={200} height={65} />}
-          {loading && <Text className="mt-6 font-noto text-white">Loading fighters...</Text>}
-          {fetchError && <Text className="mt-6 text-center font-noto text-red-400">{fetchError}</Text>}
-          <View
-            className={`mt-10 w-full ${landscape ? 'flex-row items-center justify-around' : ''}`}
-          >
-            {contenders[0] && (
-              <Contenders
-                contender={contenders[0]}
-                editNameFn={editName}
-                replaceFn={replaceContender}
-                horizontal={!landscape}
-              />
-            )}
-            {contenders.length >= 1 && (
-              <View className={`items-center ${roomy ? 'my-8' : 'my-4'}`}>
-                <BattleButton
-                  onPress={battleFn}
-                  disabled={!roomy}
-                  size={roomy ? (landscape ? 130 : 150) : 100}
-                />
-              </View>
-            )}
-            {contenders[1] && (
-              <Contenders
-                contender={contenders[1]}
-                editNameFn={editName}
-                replaceFn={replaceContender}
-                horizontal={!landscape}
-              />
-            )}
-          </View>
-          <View className={`w-full ${roomy ? 'mt-10' : 'mt-6'}`}>
+          {loading && <Text className="mt-6 px-4 font-noto text-white">Loading fighters...</Text>}
+          {fetchError && <Text className="mt-6 px-4 text-center font-noto text-red-400">{fetchError}</Text>}
+          <Battlefield
+            contenders={contenders}
+            editNameFn={editName}
+            replaceFn={replaceContender}
+            battleFn={battleFn}
+          />
+          <View className={`w-full px-4 ${roomy ? 'mt-10' : 'mt-6'}`}>
             <Fighters
               randFighters={randFighters}
               chooseFn={chooseContender}
