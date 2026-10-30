@@ -55,7 +55,7 @@ Items are in dependency order. **Checkpoints** (🚩) are hard gates — don't s
 ## Phase 2 — Data layer and game logic
 
 - [x] `mobile/src/lib/types.ts` — verbatim copy of `next-app/app/lib/types.ts` (`Fighter`, `Contender`).
-- [ ] `mobile/src/lib/api.ts` — `getRandomFighters()` and `getAllFighters()` over `fetch`, based on `config.apiBaseUrl` from `src/config.ts`, throwing on non-2xx.
+- [x] `mobile/src/lib/api.ts` — `getRandomFighters()` and `getAllFighters()` over `fetch`, based on `config.apiBaseUrl` from `src/config.ts`, throwing on non-2xx.
   - **Done when:** a temporary `console.log` in `App.tsx` prints 5 fighters and ~90 fighters from the device.
 - [x] `mobile/src/game/useGame.ts` — verbatim copy of `next-app/app/game/hooks/useGame.ts`. No changes; it has zero platform imports.
   - Preserve exactly: HP `Math.ceil(Math.random() * 49 + 50)` (51–99), slot re-indexing in `replaceContender`, higher-HP-wins / equal-is-draw in `battleFn`, `onReset` firing on replace **and** clear.
