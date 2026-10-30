@@ -49,7 +49,7 @@ Items are in dependency order. **Checkpoints** (🚩) are hard gates — don't s
 - [x] Flatten the SVGs' `<style>.cls-1{fill:…}</style>` + `class="cls-1"` into direct `fill` attributes — `react-native-svg` ignores CSS classes. (Done on the copies in `mobile/assets/icons/`; the web originals are untouched.)
 - [x] Copy assets: `next-app/public/sb-stage-2.jpg` → `mobile/assets/`, and the 4 SVGs (`smash-logo-white.svg`, `close-button.svg`, `menu-lines.svg`, `favicons/smash-icon-red.svg`) → `mobile/assets/icons/`.
 - [x] Verified off-device: `yarn typecheck` clean, `npx expo-doctor` 20/20, `npx expo export --platform ios` bundles (Expo SDK 58, RN 0.88, Reanimated 4.7 + worklets 0.13, NativeWind 4.2.7, Tailwind 3.4).
-- [ ] 🚩 **Checkpoint — running on the phone:** `cd mobile && npx expo start`, scan the QR with Expo Go. Navy background, a heading in Bangers, body text in Noto Sans KR, the logo SVG rendering.
+- [x] 🚩 **Checkpoint — running on the phone (verified on iPhone via Expo Go):** `cd mobile && npx expo start`, scan the QR with Expo Go. Navy background, a heading in Bangers, body text in Noto Sans KR, the logo SVG rendering.
   - **Do not proceed until this works.** Everything after assumes a working device loop.
 
 ## Phase 2 — Data layer and game logic
