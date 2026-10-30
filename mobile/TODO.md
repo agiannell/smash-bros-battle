@@ -72,8 +72,8 @@ Items are in dependency order. **Checkpoints** (🚩) are hard gates — don't s
 - [ ] `src/components/BattleButton.tsx` — first appears after the first fighter is chosen; gray and disabled until two contenders are loaded, red when live (darker red while pressed); `react-native-svg` shield from the 4-segment `SHIELD_PATH`, `<Pressable>` with `onPressIn`/`onPressOut` swapping `#666` ↔ `#ff3837`.
   - ⚠️ Render the "BATTLE!" label as an RN `<Text>` layered over the SVG rather than as SVG `<text>` — keeps the Bangers font reliable.
 - [x] `src/components/Battlefield.tsx` — `<ImageBackground>` with `sb-stage-2.jpg`; empty state ("Choose Your Character!") vs contender layout + `BattleButton`. **Portrait stacks the contenders vertically with the BATTLE shield between them; landscape puts them side by side with the shield in the middle** (the temporary `App.tsx` harness already does this with `useWindowDimensions`). Deviation: renders nothing with zero contenders (the landing prompt lives in `Fighters`), and the stage image is full-bleed under a navy tint.
-- [ ] `src/components/Header.tsx` — top bar with logo + hamburger, inside `SafeAreaView` insets.
-- [ ] `src/components/Menu.tsx` — `<Modal transparent>` dropdown with "See All Characters".
+- [x] `src/components/Header.tsx` — top bar with logo + hamburger, inside `SafeAreaView` insets. Deviation: hamburger on the left (Expo Go dev button covers top-right); in-flow 60px bar, not fixed.
+- [x] `src/components/Menu.tsx` — `<Modal transparent>` dropdown with "See All Characters". "See All Characters" just closes the menu until AllFighters lands.
 - [ ] `src/components/AllFighters.tsx` — full-roster grid as a `FlatList` with `numColumns`, `expo-image` with `cachePolicy="memory-disk"` and `recyclingKey={fighter.id}`.
   - ⚠️ Not a `ScrollView` of 90 images. `FlatList` windowing is the RN equivalent of the web's `loading="lazy"`.
   - ⚠️ Changing `numColumns` requires changing the `FlatList` `key` to force a re-render.
