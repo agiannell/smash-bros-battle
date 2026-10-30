@@ -32,7 +32,7 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <SafeAreaView className="flex-1 bg-navy">
-        <Header onMenuPress={() => setMenuOpen(true)} />
+        <Header menuOpen={menuOpen} onMenuPress={() => setMenuOpen(open => !open)} />
         <ScrollView contentContainerClassName="items-center pb-6" keyboardShouldPersistTaps="handled">
           {loading && <Text className="mt-6 px-4 font-noto text-white">Loading fighters...</Text>}
           {fetchError && <Text className="mt-6 px-4 text-center font-noto text-red-400">{fetchError}</Text>}
