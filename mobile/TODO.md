@@ -35,13 +35,13 @@ Items are in dependency order. **Checkpoints** (🚩) are hard gates — don't s
   - **Done when:** `mobile/package.json`, `mobile/App.tsx`, and `mobile/yarn.lock` exist.
 - [x] Confirm `mobile/` has its **own** `yarn.lock` and that root `package.json` still has **no** `workspaces` field.
   - **Done when:** `git diff package.json next-app/package.json` is empty. Breaking this breaks the CDK deploy.
-- [x] Add `mobile/.gitignore` entries for `node_modules`, `.expo`. **Deviation:** `.env` is committed, not ignored — it only holds the public API URL (no secret), so a fresh clone works without extra setup. `.env*.local` stays ignored for real secrets.
+- [x] Add `mobile/.gitignore` entries for `node_modules`, `.expo`. `.env*` is also ignored — no env files are checked in; the API base URL lives in `src/config.ts`.
 - [x] Install NativeWind v4: `nativewind`, `tailwindcss@^3`, `react-native-reanimated`. Wire up the Babel preset, `withNativeWind` in `metro.config.js`, `global.css`, and `nativewind-env.d.ts`.
   - **Done when:** a `<View className="bg-red-500">` renders red.
 - [x] Install the rest: `npx expo install expo-image expo-font @expo-google-fonts/bangers @expo-google-fonts/noto-sans-kr react-native-svg react-native-svg-transformer`
 - [x] Configure `react-native-svg-transformer` in `mobile/metro.config.js` (composes with `withNativeWind`).
 - [x] Set `"orientation": "default"` in `mobile/app.json` — the template ships `"portrait"`.
-- [x] Create `mobile/.env` with `EXPO_PUBLIC_API_BASE_URL=https://smashbros.anthonygnl.com`.
+- [x] Create `mobile/src/config.ts` exporting `config.apiBaseUrl = 'https://smashbros.anthonygnl.com'` (instead of a `.env` file).
 - [x] Port `mobile/tailwind.config.js` from `next-app/tailwind.config.ts`: keep `colors.navy`, repoint `content`, add `presets: [require('nativewind/preset')]`, map `fontFamily` to the expo-font names, and **delete the `keyframes`/`animation` blocks** (Phase 4 handles those in Reanimated).
 - [x] Load Bangers + Noto Sans KR via `useFonts` in `App.tsx`, gated on a loading state.
   - ⚠️ Import single weights from subpaths (`@expo-google-fonts/noto-sans-kr/400Regular`). Importing from the package root made Metro bundle all 9 weights (~56 MB).
@@ -55,7 +55,7 @@ Items are in dependency order. **Checkpoints** (🚩) are hard gates — don't s
 ## Phase 2 — Data layer and game logic
 
 - [ ] `mobile/src/lib/types.ts` — verbatim copy of `next-app/app/lib/types.ts` (`Fighter`, `Contender`).
-- [ ] `mobile/src/lib/api.ts` — `getRandomFighters()` and `getAllFighters()` over `fetch`, based on `process.env.EXPO_PUBLIC_API_BASE_URL`, throwing on non-2xx.
+- [ ] `mobile/src/lib/api.ts` — `getRandomFighters()` and `getAllFighters()` over `fetch`, based on `config.apiBaseUrl` from `src/config.ts`, throwing on non-2xx.
   - **Done when:** a temporary `console.log` in `App.tsx` prints 5 fighters and ~90 fighters from the device.
 - [ ] `mobile/src/game/useGame.ts` — verbatim copy of `next-app/app/game/hooks/useGame.ts`. No changes; it has zero platform imports.
   - Preserve exactly: HP `Math.ceil(Math.random() * 49 + 50)` (51–99), slot re-indexing in `replaceContender`, higher-HP-wins / equal-is-draw in `battleFn`, `onReset` firing on replace **and** clear.

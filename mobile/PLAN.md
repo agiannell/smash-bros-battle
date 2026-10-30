@@ -105,12 +105,12 @@ mobile/
   package.json          yarn.lock          tsconfig.json
   app.json              babel.config.js    metro.config.js
   tailwind.config.js    global.css         nativewind-env.d.ts
-  .env                  App.tsx
+  App.tsx
   assets/
     sb-stage-2.jpg              (copy from next-app/public/)
     icons/*.svg                 (copy the 4 SVGs from next-app/public/)
   src/
-    lib/types.ts        lib/api.ts
+    config.ts           lib/types.ts        lib/api.ts
     game/useGame.ts     game/useFighters.ts
     components/...
 ```
@@ -120,8 +120,7 @@ mobile/
    - **NativeWind v4 pairs with Tailwind v3** — and `next-app` is already on `3.4.17`, so the theme config ports over directly.
 3. `npx expo install expo-image expo-font @expo-google-fonts/bangers @expo-google-fonts/noto-sans-kr react-native-svg react-native-svg-transformer`
 4. `app.json`: set `"orientation": "default"` (the template defaults to `"portrait"`; both orientations are wanted).
-5. `.env`: `EXPO_PUBLIC_API_BASE_URL=https://smashbros.anthonygnl.com`
-   Expo inlines any `EXPO_PUBLIC_`-prefixed var at bundle time; no extra config library.
+5. `src/config.ts`: exports `config.apiBaseUrl = 'https://smashbros.anthonygnl.com'`. No `.env` files are used or checked in. SSM was rejected because it would need AWS credentials on the device, and there is no build pipeline (Expo Go) to inject a pipeline variable.
 6. **Checkpoint:** `npx expo start`, scan with Expo Go, see a navy screen with Bangers text. Don't move on until this works.
 
 ### Porting `tailwind.config.js`
@@ -138,7 +137,7 @@ Copy `next-app/tailwind.config.ts` and change:
 
 **`src/lib/types.ts`** — verbatim copy of `next-app/app/lib/types.ts`.
 
-**`src/lib/api.ts`** — new. Thin wrapper over `fetch` against `process.env.EXPO_PUBLIC_API_BASE_URL`, exposing `getRandomFighters()` and `getAllFighters()`, both returning `Fighter[]` and throwing on non-2xx.
+**`src/lib/api.ts`** — new. Thin wrapper over `fetch` against `config.apiBaseUrl` from `src/config.ts`, exposing `getRandomFighters()` and `getAllFighters()`, both returning `Fighter[]` and throwing on non-2xx.
 
 **`src/game/useGame.ts`** — verbatim copy of `next-app/app/game/hooks/useGame.ts`. Pure `useState`, no platform deps. Preserves all existing behavior: HP `Math.ceil(Math.random() * 49 + 50)`, slot re-indexing in `replaceContender`, higher-HP-wins/equal-is-draw in `battleFn`, `onReset` callback on replace and clear.
 

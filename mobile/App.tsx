@@ -7,6 +7,7 @@ import { useFonts } from 'expo-font'
 import { Bangers_400Regular } from '@expo-google-fonts/bangers/400Regular'
 import { NotoSansKR_400Regular } from '@expo-google-fonts/noto-sans-kr/400Regular'
 import Logo from './assets/icons/smash-logo-white.svg'
+import { config } from './src/config'
 
 // Phase 1 checkpoint screen: proves NativeWind, fonts, and SVG all work on device.
 export default function App() {
@@ -19,7 +20,7 @@ export default function App() {
       <Logo width={240} height={78} />
       <Text className="mt-8 font-bangers text-5xl tracking-widest text-white">Smash Bros Battle</Text>
       <Text className="mt-4 text-center font-noto text-base text-white">
-        Expo + NativeWind are running. API: {process.env.EXPO_PUBLIC_API_BASE_URL}
+        Expo + NativeWind are running. API: {config.apiBaseUrl}
       </Text>
       <View className="mt-6 h-4 w-40 rounded bg-red-500" />
       <StatusBar style="light" />
