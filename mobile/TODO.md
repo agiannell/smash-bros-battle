@@ -81,8 +81,8 @@ Items are in dependency order. **Checkpoints** (🚩) are hard gates — don't s
 - [ ] `App.tsx` — compose `useFighters` + `useGame` (passing `refetchRandom` as `onReset`), header/result switch, error banner, `Battlefield`, `Fighters`. Keep the `result satisfies never` exhaustiveness check from `Game.tsx`.
 - [ ] Wire pull-to-refresh to `useFighters().reload` (e.g. `RefreshControl` on the fighter list). The hook's error copy says "Pull to retry", so this has to exist. Also use `loading` for the initial state.
 - [ ] Replace every `hover:` variant with `active:` / `Pressable` press state.
-- [ ] Decide the `vw`/`vh` strategy: test whether NativeWind v4 viewport units update on rotation. If not, switch those sizes to `useWindowDimensions()` + inline styles.
-  - **Done when:** the decision is made deliberately and applied consistently, not left half-and-half.
+- [x] **`vw`/`vh` decision: don't port them.** The web sizes (`h-[9vw]`, `w-[20vw]`, ...) are tuned for desktop widths; on a ~390pt phone `9vw` is ~35pt, too small to tap. Mobile uses fixed point sizes (Tailwind scale / explicit numbers) and `useWindowDimensions()` only where orientation changes the layout. This also avoids depending on NativeWind viewport units updating on rotation.
+- [x] Shared helpers the leaf components need: `src/components/GreenButton.tsx` (replaces the `.btn-green` CSS class) and `src/components/FighterImage.tsx` (`expo-image` with `memory-disk` caching; reused by the all-fighters grid).
 - [ ] Add landscape layouts — reflow the contender pair and the all-fighters `numColumns`.
 - [ ] 🚩 **Checkpoint — full manual pass on device** (see "Verification" in `PLAN.md`), **rotating the device at every step**.
 
