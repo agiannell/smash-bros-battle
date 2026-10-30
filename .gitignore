@@ -2,6 +2,7 @@
 node_modules
 next-app/node_modules
 next-app/.next
+next-app/.open-next
 api/node_modules
 
 # CDK build output
