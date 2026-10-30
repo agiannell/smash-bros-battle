@@ -1,6 +1,9 @@
 import { useState, useCallback, useEffect } from 'react'
+import { config } from '../config'
 import { getAllFighters, getRandomFighters } from '../lib/api'
 import type { Fighter } from '../lib/types'
+
+const toQueue = (fighters: Fighter[]) => fighters.slice(0, config.queueSize)
 
 export function useFighters() {
   const [randFighters, setRandFighters] = useState<Fighter[]>([])
@@ -12,7 +15,7 @@ export function useFighters() {
     setLoading(true)
     try {
       const [rand, all] = await Promise.all([getRandomFighters(), getAllFighters()])
-      setRandFighters(rand)
+      setRandFighters(toQueue(rand))
       setAllFighters(all)
       setFetchError(null)
     } catch (err) {
@@ -25,7 +28,7 @@ export function useFighters() {
 
   const fetchRandom = useCallback(async () => {
     try {
-      setRandFighters(await getRandomFighters())
+      setRandFighters(toQueue(await getRandomFighters()))
       setFetchError(null)
     } catch (err) {
       console.error('Failed to fetch random fighters', err)

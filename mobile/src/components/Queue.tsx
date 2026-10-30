@@ -12,9 +12,14 @@ export function Queue({ fighter, chooseFn, contendersCount }: QueueProps) {
   if (contendersCount >= 2) return null
 
   return (
-    <Pressable onPress={() => chooseFn(fighter)} className="group items-center px-2 active:scale-110">
+    <Pressable onPress={() => chooseFn(fighter)} className="group flex-1 items-center px-1 active:scale-110">
       <FighterImage uri={fighter.image} label={fighter.name} size={80} />
-      <Text className="mt-1 font-noto text-sm font-bold text-white group-active:text-[#eeff00]">{fighter.name}</Text>
+      <Text
+        numberOfLines={2}
+        className="mt-1 text-center font-noto text-xs font-bold text-white group-active:text-[#eeff00]"
+      >
+        {fighter.name}
+      </Text>
     </Pressable>
   )
 }
