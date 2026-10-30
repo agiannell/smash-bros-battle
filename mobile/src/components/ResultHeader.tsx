@@ -20,9 +20,6 @@ export function ResultHeader({ kind, name, clearFn }: ResultHeaderProps) {
       <SafeAreaView
         className={`flex-1 items-center justify-center px-6 ${isWin ? 'bg-[rgba(54,153,83,0.9)]' : 'bg-[rgba(255,0,0,0.9)]'}`}
       >
-        <Pressable onPress={clearFn} accessibilityLabel="Close" hitSlop={12} className="absolute right-5 top-4 active:opacity-60">
-          <CloseIcon width={40} height={40} />
-        </Pressable>
         <Image
           source={{ uri: isWin ? WIN_GIF : DRAW_GIF }}
           accessibilityLabel={isWin ? 'congrats sticker' : 'unenthused clapping'}
@@ -32,6 +29,9 @@ export function ResultHeader({ kind, name, clearFn }: ResultHeaderProps) {
         <Text className="mt-6 text-center font-bangers text-6xl tracking-widest text-white">
           {isWin ? `${name} wins!` : 'Draw!'}
         </Text>
+        <Pressable onPress={clearFn} accessibilityLabel="Close" hitSlop={16} className="mt-8 active:opacity-60">
+          <CloseIcon width={64} height={64} />
+        </Pressable>
       </SafeAreaView>
     </Modal>
   )

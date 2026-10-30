@@ -153,7 +153,7 @@ Rebuild under `src/components/`, mapping one-to-one from `next-app/app/component
 | Mobile component | Ported from | Main rework |
 |---|---|---|
 | `Queue.tsx` | `Queue.tsx` | `<Pressable>`; `expo-image` for the fighter thumb |
-| `Fighters.tsx` | `Fighters.tsx` | Non-scrolling row of 4 fighters (`config.queueSize`) |
+| `Fighters.tsx` | `Fighters.tsx` | Non-scrolling grid of 6 fighters (`config.queueSize`, via `/api/fighters?count=6`); 2 columns on landing, 3 once a fighter is chosen |
 | `Contenders.tsx` | `Contenders.tsx` | `<TextInput>` for name edit; web's spread shadow becomes an SVG radial-gradient glow; compact row layout in portrait |
 | `BattleButton.tsx` | `BattleButton.tsx` | `react-native-svg` shield, `<Pressable>` with `onPressIn/Out` swapping `#666`→`#ff3837` |
 | `Battlefield.tsx` | `Battlefield.tsx` | `<ImageBackground>` with `sb-stage-2.jpg`; portrait stacks contenders with BATTLE between them; landscape is side by side |

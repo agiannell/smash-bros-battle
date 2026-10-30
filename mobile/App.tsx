@@ -26,6 +26,8 @@ export default function App() {
   if (!fontsLoaded) return null
 
   const landscape = width > height
+  // Two contenders means the queue is gone, so there's room to spread things out.
+  const roomy = contenders.length === 2
 
   return (
     <SafeAreaProvider>
@@ -34,7 +36,9 @@ export default function App() {
           {!landscape && <Logo width={200} height={65} />}
           {loading && <Text className="mt-6 font-noto text-white">Loading fighters...</Text>}
           {fetchError && <Text className="mt-6 text-center font-noto text-red-400">{fetchError}</Text>}
-          <View className={`mt-6 w-full ${landscape ? 'flex-row items-center justify-around' : ''}`}>
+          <View
+            className={`mt-10 w-full ${landscape ? 'flex-row items-center justify-around' : ''}`}
+          >
             {contenders[0] && (
               <Contenders
                 contender={contenders[0]}
@@ -43,9 +47,13 @@ export default function App() {
                 horizontal={!landscape}
               />
             )}
-            {contenders.length === 2 && (
-              <View className="my-2 items-center">
-                <BattleButton onPress={battleFn} size={landscape ? 110 : 120} />
+            {contenders.length >= 1 && (
+              <View className={`items-center ${roomy ? 'my-8' : 'my-4'}`}>
+                <BattleButton
+                  onPress={battleFn}
+                  disabled={!roomy}
+                  size={roomy ? (landscape ? 130 : 150) : 100}
+                />
               </View>
             )}
             {contenders[1] && (
@@ -57,7 +65,7 @@ export default function App() {
               />
             )}
           </View>
-          <View className="mt-6 w-full">
+          <View className={`w-full ${roomy ? 'mt-10' : 'mt-6'}`}>
             <Fighters
               randFighters={randFighters}
               chooseFn={chooseContender}

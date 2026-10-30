@@ -7,5 +7,5 @@ async function fetchFighters(path: string): Promise<Fighter[]> {
   return res.json()
 }
 
-export const getRandomFighters = () => fetchFighters('/api/fighters')
+export const getRandomFighters = (count: number) => fetchFighters(`/api/fighters?count=${count}`)
 export const getAllFighters = () => fetchFighters('/api/all-fighters')

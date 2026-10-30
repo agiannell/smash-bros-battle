@@ -65,7 +65,7 @@ export function Contenders({ contender, editNameFn, replaceFn, horizontal = fals
     </View>
   ) : (
     <View className={horizontal ? 'items-start' : 'items-center'}>
-      <Text className={`font-bangers text-3xl tracking-widest text-white ${horizontal ? '' : 'text-center'}`}>
+      <Text className={`font-bangers tracking-widest text-white ${horizontal ? 'text-2xl' : 'text-center text-3xl'}`}>
         {contender.name}
       </Text>
       <View className="mt-1 flex-row">

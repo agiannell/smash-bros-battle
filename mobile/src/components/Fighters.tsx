@@ -19,13 +19,20 @@ export function Fighters({ randFighters, chooseFn, contendersCount, clearFn }: F
           <Text className="font-bangers text-4xl tracking-widest text-white">Reset Battlefield</Text>
         </Pressable>
       ) : (
-        <Text
-          className={`mb-4 font-bangers text-4xl tracking-widest text-white ${contendersCount === 1 ? '' : 'opacity-0'}`}
-        >
-          Choose Your Character!
-        </Text>
+        <>
+          <Text
+            className={`font-bangers text-4xl tracking-widest text-white ${contendersCount === 0 ? 'mb-1' : 'mb-4'}`}
+          >
+            Choose Your Character!
+          </Text>
+          {contendersCount === 0 && (
+            <Text className="mb-4 px-6 text-center font-noto text-base text-white">
+              Pick two fighters, then hit BATTLE. The higher HP wins!
+            </Text>
+          )}
+        </>
       )}
-      <View className="w-full flex-row px-2">
+      <View className="w-full flex-row flex-wrap">
         {randFighters.map(f => (
           <Queue key={f.id} fighter={f} chooseFn={chooseFn} contendersCount={contendersCount} />
         ))}

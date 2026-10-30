@@ -10,23 +10,28 @@ const SHIELD_PATH =
 
 interface BattleButtonProps {
   onPress: () => void
+  disabled?: boolean
   size?: number
 }
 
-export function BattleButton({ onPress, size = 120 }: BattleButtonProps) {
+export function BattleButton({ onPress, disabled = false, size = 120 }: BattleButtonProps) {
   const [pressed, setPressed] = useState(false)
+
+  const fill = disabled ? '#666' : pressed ? '#b92828' : '#ff3837'
 
   return (
     <Pressable
       onPress={onPress}
       onPressIn={() => setPressed(true)}
       onPressOut={() => setPressed(false)}
+      disabled={disabled}
       accessibilityLabel="Battle!"
+      accessibilityState={{ disabled }}
       style={{ width: size, height: size }}
       className="active:scale-110"
     >
       <Svg width={size} height={size} viewBox="0 0 1079.02 1080">
-        <Path fill={pressed ? '#ff3837' : '#666'} d={SHIELD_PATH} />
+        <Path fill={fill} d={SHIELD_PATH} />
         <SvgText
           x={154.33}
           y={751.13}
