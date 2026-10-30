@@ -29,22 +29,26 @@ Items are in dependency order. **Checkpoints** (🚩) are hard gates — don't s
 
 ## Phase 1 — Scaffold the Expo app
 
-- [ ] Install Expo Go on the iPhone from the App Store (free, no developer account).
-- [ ] Scaffold: `npx create-expo-app@latest mobile --template blank-typescript`
+- [x] Install Expo Go on the iPhone from the App Store (free, no developer account).
+- [x] Scaffold: `npx create-expo-app@latest mobile --template blank-typescript`
   - ⚠️ `mobile/PLAN.md` and `mobile/TODO.md` already exist — make sure the scaffolder doesn't clobber them, or scaffold to a temp dir and move the files in.
   - **Done when:** `mobile/package.json`, `mobile/App.tsx`, and `mobile/yarn.lock` exist.
-- [ ] Confirm `mobile/` has its **own** `yarn.lock` and that root `package.json` still has **no** `workspaces` field.
+- [x] Confirm `mobile/` has its **own** `yarn.lock` and that root `package.json` still has **no** `workspaces` field.
   - **Done when:** `git diff package.json next-app/package.json` is empty. Breaking this breaks the CDK deploy.
-- [ ] Add `mobile/.gitignore` entries for `node_modules`, `.expo`, `.env`.
-- [ ] Install NativeWind v4: `nativewind`, `tailwindcss@^3`, `react-native-reanimated`. Wire up the Babel preset, `withNativeWind` in `metro.config.js`, `global.css`, and `nativewind-env.d.ts`.
+- [x] Add `mobile/.gitignore` entries for `node_modules`, `.expo`. **Deviation:** `.env` is committed, not ignored — it only holds the public API URL (no secret), so a fresh clone works without extra setup. `.env*.local` stays ignored for real secrets.
+- [x] Install NativeWind v4: `nativewind`, `tailwindcss@^3`, `react-native-reanimated`. Wire up the Babel preset, `withNativeWind` in `metro.config.js`, `global.css`, and `nativewind-env.d.ts`.
   - **Done when:** a `<View className="bg-red-500">` renders red.
-- [ ] Install the rest: `npx expo install expo-image expo-font @expo-google-fonts/bangers @expo-google-fonts/noto-sans-kr react-native-svg react-native-svg-transformer`
-- [ ] Configure `react-native-svg-transformer` in `mobile/metro.config.js` (composes with `withNativeWind`).
-- [ ] Set `"orientation": "default"` in `mobile/app.json` — the template ships `"portrait"`.
-- [ ] Create `mobile/.env` with `EXPO_PUBLIC_API_BASE_URL=https://smashbros.anthonygnl.com`.
-- [ ] Port `mobile/tailwind.config.js` from `next-app/tailwind.config.ts`: keep `colors.navy`, repoint `content`, add `presets: [require('nativewind/preset')]`, map `fontFamily` to the expo-font names, and **delete the `keyframes`/`animation` blocks** (Phase 4 handles those in Reanimated).
-- [ ] Load Bangers + Noto Sans KR via `useFonts` in `App.tsx`, gated on a splash/loading state.
-- [ ] Copy assets: `next-app/public/sb-stage-2.jpg` → `mobile/assets/`, and the 4 SVGs (`smash-logo-white.svg`, `close-button.svg`, `menu-lines.svg`, `favicons/smash-icon-red.svg`) → `mobile/assets/icons/`.
+- [x] Install the rest: `npx expo install expo-image expo-font @expo-google-fonts/bangers @expo-google-fonts/noto-sans-kr react-native-svg react-native-svg-transformer`
+- [x] Configure `react-native-svg-transformer` in `mobile/metro.config.js` (composes with `withNativeWind`).
+- [x] Set `"orientation": "default"` in `mobile/app.json` — the template ships `"portrait"`.
+- [x] Create `mobile/.env` with `EXPO_PUBLIC_API_BASE_URL=https://smashbros.anthonygnl.com`.
+- [x] Port `mobile/tailwind.config.js` from `next-app/tailwind.config.ts`: keep `colors.navy`, repoint `content`, add `presets: [require('nativewind/preset')]`, map `fontFamily` to the expo-font names, and **delete the `keyframes`/`animation` blocks** (Phase 4 handles those in Reanimated).
+- [x] Load Bangers + Noto Sans KR via `useFonts` in `App.tsx`, gated on a loading state.
+  - ⚠️ Import single weights from subpaths (`@expo-google-fonts/noto-sans-kr/400Regular`). Importing from the package root made Metro bundle all 9 weights (~56 MB).
+  - Note: Noto Sans KR Regular alone is 6.2 MB (full CJK). Fine for personal use; subset it if bundle size ever matters.
+- [x] Flatten the SVGs' `<style>.cls-1{fill:…}</style>` + `class="cls-1"` into direct `fill` attributes — `react-native-svg` ignores CSS classes. (Done on the copies in `mobile/assets/icons/`; the web originals are untouched.)
+- [x] Copy assets: `next-app/public/sb-stage-2.jpg` → `mobile/assets/`, and the 4 SVGs (`smash-logo-white.svg`, `close-button.svg`, `menu-lines.svg`, `favicons/smash-icon-red.svg`) → `mobile/assets/icons/`.
+- [x] Verified off-device: `yarn typecheck` clean, `npx expo-doctor` 20/20, `npx expo export --platform ios` bundles (Expo SDK 58, RN 0.88, Reanimated 4.7 + worklets 0.13, NativeWind 4.2.7, Tailwind 3.4).
 - [ ] 🚩 **Checkpoint — running on the phone:** `cd mobile && npx expo start`, scan the QR with Expo Go. Navy background, a heading in Bangers, body text in Noto Sans KR, the logo SVG rendering.
   - **Do not proceed until this works.** Everything after assumes a working device loop.
 
