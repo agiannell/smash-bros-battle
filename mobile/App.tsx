@@ -8,10 +8,12 @@ import { Bangers_400Regular } from '@expo-google-fonts/bangers/400Regular'
 import { NotoSansKR_400Regular } from '@expo-google-fonts/noto-sans-kr/400Regular'
 import Logo from './assets/icons/smash-logo-white.svg'
 import { config } from './src/config'
+import { useFighters } from './src/game/useFighters'
 
-// Phase 1 checkpoint screen: proves NativeWind, fonts, and SVG all work on device.
+// Temporary checkpoint screen (replaced by the real game UI in Phase 3).
 export default function App() {
   const [fontsLoaded] = useFonts({ Bangers_400Regular, NotoSansKR_400Regular })
+  const { randFighters, allFighters, loading, fetchError } = useFighters()
 
   if (!fontsLoaded) return null
 
@@ -22,7 +24,11 @@ export default function App() {
       <Text className="mt-4 text-center font-noto text-base text-white">
         Expo + NativeWind are running. API: {config.apiBaseUrl}
       </Text>
-      <View className="mt-6 h-4 w-40 rounded bg-red-500" />
+      <Text className="mt-6 text-center font-noto text-lg text-white">
+        {loading
+          ? 'Loading fighters...'
+          : (fetchError ?? `${randFighters.length} random, ${allFighters.length} total (${randFighters[0]?.name})`)}
+      </Text>
       <StatusBar style="light" />
     </View>
   )
