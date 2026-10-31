@@ -33,8 +33,8 @@ export function Game() {
   const hintStyle = useAnimatedStyle(() => {
     const pull = -scrollY.value
     return {
-      opacity: interpolate(pull, [0, 90], [0.6, 1], Extrapolation.CLAMP),
-      transform: [{ scale: interpolate(pull, [0, 90], [1, 1.8], Extrapolation.CLAMP) }],
+      opacity: interpolate(pull, [0, 70], [0.6, 1], Extrapolation.CLAMP),
+      transform: [{ scale: interpolate(pull, [0, 70], [1, 2], Extrapolation.CLAMP) }],
     }
   })
 
@@ -75,7 +75,7 @@ export function Game() {
           <Text className="mt-6 px-4 font-noto text-white">Loading fighters...</Text>
         )}
         {fetchError && <Text className="mt-6 px-4 text-center font-noto text-red-400">{fetchError}</Text>}
-        {contenders.length === 0 && !loading && (
+        {contenders.length === 0 && randFighters.length > 0 && (
           <Animated.View style={hintStyle} className="mt-3">
             <Text className="font-noto text-xs text-white">↓ Pull down to refresh fighters</Text>
           </Animated.View>
