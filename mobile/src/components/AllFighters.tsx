@@ -31,6 +31,7 @@ export function AllFighters({ allFighters }: AllFightersProps) {
           </Text>
         }
         contentContainerClassName="pb-6"
+        contentContainerStyle={{ paddingLeft: insets.left, paddingRight: insets.right }}
         renderItem={({ item }) => (
           <View className="flex-1 items-center py-2">
             <FighterImage uri={item.image} label={item.name} size={90} recyclingKey={item.id} />

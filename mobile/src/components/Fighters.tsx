@@ -1,4 +1,4 @@
-import { Pressable, Text, View } from 'react-native'
+import { Pressable, Text, View, useWindowDimensions } from 'react-native'
 import { Queue } from './Queue'
 import type { Fighter } from '../lib/types'
 
@@ -10,6 +10,8 @@ interface FightersProps {
 }
 
 export function Fighters({ randFighters, chooseFn, contendersCount, clearFn }: FightersProps) {
+  const { width, height } = useWindowDimensions()
+  const landscape = width > height
   const showReset = contendersCount >= 2
 
   return (
@@ -21,7 +23,7 @@ export function Fighters({ randFighters, chooseFn, contendersCount, clearFn }: F
       ) : (
         <>
           <Text
-            className={`font-bangers text-4xl tracking-widest text-white ${contendersCount === 0 ? 'mb-1' : 'mb-4'}`}
+            className={`font-bangers tracking-widest text-white ${landscape ? 'text-3xl' : 'text-4xl'} ${contendersCount === 0 ? 'mb-1' : 'mb-4'}`}
           >
             Choose Your Character!
           </Text>
@@ -32,7 +34,7 @@ export function Fighters({ randFighters, chooseFn, contendersCount, clearFn }: F
           )}
         </>
       )}
-      <View className="w-full flex-row flex-wrap">
+      <View className={`w-full flex-row ${landscape ? '' : 'flex-wrap'}`}>
         {randFighters.map(f => (
           <Queue key={f.id} fighter={f} chooseFn={chooseFn} contendersCount={contendersCount} />
         ))}

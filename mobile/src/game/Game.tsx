@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import * as Haptics from 'expo-haptics'
 import { StatusBar } from 'expo-status-bar'
 import { RefreshControl, Text, View } from 'react-native'
@@ -9,7 +9,7 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
 } from 'react-native-reanimated'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { scheduleOnRN } from 'react-native-worklets'
 import { AllFighters } from '../components/AllFighters'
 import { Battlefield } from '../components/Battlefield'
@@ -30,6 +30,8 @@ const pullTick = () => {
 export function Game() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [showAll, setShowAll] = useState(false)
+  const insets = useSafeAreaInsets()
+  const scrollRef = useRef<Animated.ScrollView>(null)
   const { randFighters, allFighters, loading, fetchError, reload, refetchRandom } = useFighters()
   const { contenders, result, chooseContender, editName, replaceContender, clearContenders, battleFn } =
     useGame(refetchRandom)
@@ -53,6 +55,11 @@ export function Game() {
       transform: [{ scale: 1 + Math.max(pull, 0) / 150 }],
     }
   })
+
+  // Picking the first fighter can leave the queue scrolled below the stage; bring the battle back into view.
+  useEffect(() => {
+    if (contenders.length === 2) scrollRef.current?.scrollTo({ y: 0, animated: true })
+  }, [contenders.length])
 
   // Two contenders means the queue is gone, so there's room to spread things out.
   const roomy = contenders.length === 2
@@ -78,9 +85,11 @@ export function Game() {
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-navy">
+    // Side insets are applied per element so the header and stage stay edge to edge in landscape.
+    <SafeAreaView edges={['top', 'bottom']} className="flex-1 bg-navy">
       <Header menuOpen={menuOpen || showAll} onMenuPress={toggleHeader} />
       <Animated.ScrollView
+        ref={scrollRef}
         contentContainerClassName="items-center pb-6"
         keyboardShouldPersistTaps="handled"
         onScroll={onScroll}
@@ -102,7 +111,10 @@ export function Game() {
           replaceFn={replaceContender}
           battleFn={battleFn}
         />
-        <View className={`w-full px-4 ${roomy ? 'mt-10' : 'mt-6'}`}>
+        <View
+          className={`w-full ${roomy ? 'mt-10' : 'mt-6'}`}
+          style={{ paddingLeft: Math.max(16, insets.left), paddingRight: Math.max(16, insets.right) }}
+        >
           <Fighters
             randFighters={randFighters}
             chooseFn={chooseContender}
