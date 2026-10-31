@@ -7,6 +7,7 @@
     "@expo-google-fonts/noto-sans-kr": "^0.4.4",
     "expo": "~58.0.21",
     "expo-font": "~58.0.11",
+    "expo-haptics": "~58.0.7",
     "expo-image": "~58.0.18",
     "expo-status-bar": "~58.0.4",
     "nativewind": "^4.2.7",

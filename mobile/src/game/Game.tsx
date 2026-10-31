@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import * as Haptics from 'expo-haptics'
 import { StatusBar } from 'expo-status-bar'
 import { RefreshControl, Text, View } from 'react-native'
 import Animated, {
@@ -9,6 +10,7 @@ import Animated, {
   useSharedValue,
 } from 'react-native-reanimated'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { scheduleOnRN } from 'react-native-worklets'
 import { AllFighters } from '../components/AllFighters'
 import { Battlefield } from '../components/Battlefield'
 import { Fighters } from '../components/Fighters'
@@ -17,6 +19,13 @@ import { Menu } from '../components/Menu'
 import { ResultHeader } from '../components/ResultHeader'
 import { useFighters } from './useFighters'
 import { useGame } from './useGame'
+
+// How far (in points) the list must be pulled before a tap tells the user it will refresh on release.
+const PULL_THRESHOLD = 120
+
+const pullTick = () => {
+  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
+}
 
 export function Game() {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -27,14 +36,21 @@ export function Game() {
 
   // The scroll offset goes negative while pulling down past the top; the hint grows with the pull.
   const scrollY = useSharedValue(0)
+  const pastThreshold = useSharedValue(false)
   const onScroll = useAnimatedScrollHandler(event => {
     scrollY.value = event.contentOffset.y
+    // Tap once on crossing the threshold; re-arm when the pull drops back under it.
+    const crossed = -event.contentOffset.y >= PULL_THRESHOLD
+    if (crossed !== pastThreshold.value) {
+      pastThreshold.value = crossed
+      if (crossed) scheduleOnRN(pullTick)
+    }
   })
   const hintStyle = useAnimatedStyle(() => {
     const pull = -scrollY.value
     return {
       opacity: interpolate(pull, [0, 70], [0.6, 1], Extrapolation.CLAMP),
-      transform: [{ scale: interpolate(pull, [0, 70], [1, 2], Extrapolation.CLAMP) }],
+      transform: [{ scale: 1 + Math.max(pull, 0) / 150 }],
     }
   })
 

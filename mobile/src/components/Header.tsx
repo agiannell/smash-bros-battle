@@ -8,15 +8,15 @@ interface HeaderProps {
   onMenuPress: () => void
 }
 
-// The hamburger sits on the left: Expo Go's floating dev-menu button covers the top-right corner.
+// The hamburger sits on the right, matching the web (Expo Go's floating dev-menu button can cover it there).
 export function Header({ menuOpen, onMenuPress }: HeaderProps) {
   return (
-    <View className="z-20 h-[60px] w-full items-center justify-center bg-black">
+    <View className="z-20 h-[60px] w-full items-center justify-center bg-black/60">
       <Pressable
         onPress={onMenuPress}
         accessibilityLabel={menuOpen ? 'Close menu' : 'Open menu'}
         hitSlop={12}
-        className="absolute left-6 h-[25px] w-[30px] items-center justify-center active:scale-90"
+        className="absolute right-6 h-[25px] w-[30px] items-center justify-center active:scale-90"
       >
         {menuOpen ? <CloseIcon width={26} height={26} /> : <MenuIcon width={30} height={25} />}
       </Pressable>

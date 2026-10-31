@@ -2141,6 +2141,11 @@ expo-font@~58.0.11:
   resolved "https://registry.npmjs.org/expo-font/-/expo-font-58.0.11.tgz#03378f05616d59d0385a2e07ba46102cb575b95a"
   integrity sha512-6r7s6xk2L2orvum+x+TY1fzEcMtuCBRQTLgC/Su2uLzNPpT4L+E+S4IAGy8ZIjeVvwk2j2pj+HiZ23O7eh1PGQ==
 
+expo-haptics@~58.0.7:
+  version "58.0.7"
+  resolved "https://registry.npmjs.org/expo-haptics/-/expo-haptics-58.0.7.tgz#88f72bd09f1d93248138e4bb2c91a286e102bd6f"
+  integrity sha512-mAY3rbng6EuYysq9wnJKhKwYYlDjqnPYcS5OXe3zj4TlAaOFMl/EfiSOuAMawc2nsXCAnwJ5U0E11nq5zQO0mg==
+
 expo-image@~58.0.18:
   version "58.0.18"
   resolved "https://registry.npmjs.org/expo-image/-/expo-image-58.0.18.tgz#79d56161af93aa57a3f41721f11cc9619f19853e"
