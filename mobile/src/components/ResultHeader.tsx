@@ -16,7 +16,12 @@ export function ResultHeader({ kind, name, clearFn }: ResultHeaderProps) {
   const isWin = kind === 'win'
 
   return (
-    <Modal transparent animationType="fade" onRequestClose={clearFn}>
+    <Modal
+      transparent
+      animationType="fade"
+      supportedOrientations={['portrait', 'landscape']}
+      onRequestClose={clearFn}
+    >
       <SafeAreaView
         className={`flex-1 items-center justify-center px-6 ${isWin ? 'bg-[rgba(54,153,83,0.9)]' : 'bg-[rgba(255,0,0,0.9)]'}`}
       >

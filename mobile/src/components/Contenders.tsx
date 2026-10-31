@@ -10,6 +10,8 @@ interface ContendersProps {
   editNameFn: (slot: 0 | 1, name: string) => void
   replaceFn: (slot: 0 | 1) => void
   horizontal?: boolean
+  imageSize?: number
+  stackButtons?: boolean
 }
 
 // iOS shadows have no spread, so the web's soft dark halo is a radial gradient behind the image.
@@ -37,7 +39,14 @@ function ImageWithGlow({ uri, label, size }: { uri: string; label: string; size:
   )
 }
 
-export function Contenders({ contender, editNameFn, replaceFn, horizontal = false }: ContendersProps) {
+export function Contenders({
+  contender,
+  editNameFn,
+  replaceFn,
+  horizontal = false,
+  imageSize = 120,
+  stackButtons = false,
+}: ContendersProps) {
   const [editing, setEditing] = useState(false)
   const [userInput, setUserInput] = useState('')
 
@@ -68,7 +77,7 @@ export function Contenders({ contender, editNameFn, replaceFn, horizontal = fals
       <Text className={`font-bangers tracking-widest text-white ${horizontal ? 'text-2xl' : 'text-center text-3xl'}`}>
         {contender.name}
       </Text>
-      <View className="mt-1 flex-row">
+      <View className={`mt-1 ${stackButtons ? 'items-start' : 'flex-row'}`}>
         <GreenButton label="Edit Name" onPress={() => setEditing(true)} />
         <GreenButton label="Replace" onPress={() => replaceFn(contender.slot)} />
       </View>
@@ -78,7 +87,7 @@ export function Contenders({ contender, editNameFn, replaceFn, horizontal = fals
   if (horizontal) {
     return (
       <View className="flex-row items-center">
-        <ImageWithGlow uri={contender.image} label={contender.name} size={120} />
+        <ImageWithGlow uri={contender.image} label={contender.name} size={imageSize} />
         <View className="ml-4 flex-1 items-start">
           {hp}
           {details}
