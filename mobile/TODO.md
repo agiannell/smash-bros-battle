@@ -85,7 +85,7 @@ Items are in dependency order. **Checkpoints** (🚩) are hard gates — don't s
 - [x] **`vw`/`vh` decision: don't port them.** The web sizes (`h-[9vw]`, `w-[20vw]`, ...) are tuned for desktop widths; on a ~390pt phone `9vw` is ~35pt, too small to tap. Mobile uses fixed point sizes (Tailwind scale / explicit numbers) and `useWindowDimensions()` only where orientation changes the layout. This also avoids depending on NativeWind viewport units updating on rotation.
 - [x] Shared helpers the leaf components need: `src/components/GreenButton.tsx` (replaces the `.btn-green` CSS class) and `src/components/FighterImage.tsx` (`expo-image` with `memory-disk` caching; reused by the all-fighters grid).
 - [x] Add landscape layouts — reflow the contender pair and the all-fighters `numColumns`.
-- [ ] 🚩 **Checkpoint — full manual pass on device** (see "Verification" in `PLAN.md`), **rotating the device at every step**.
+- [x] 🚩 **Checkpoint — full manual pass on device** (see "Verification" in `PLAN.md`), **rotating the device at every step**.
 
 ## Phase 4 — Animations (Reanimated)
 
