@@ -1,4 +1,5 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 interface MenuProps {
   visible: boolean
@@ -7,13 +8,15 @@ interface MenuProps {
 }
 
 // Rendered in-tree rather than in a Modal so the Header (and its toggle) stays tappable while open.
-// The container is positioned with a plain View so the offset below the 60px header can't be lost
-// to className/style merging on a Pressable.
+// Absolute offsets are measured from the parent's outer edge, ignoring the SafeAreaView's padding,
+// so the status-bar inset has to be added to clear the 60px header.
 export function Menu({ visible, onClose, onSeeAll }: MenuProps) {
+  const insets = useSafeAreaInsets()
+
   if (!visible) return null
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { top: insets.top + 60 }]}>
       <Pressable
         onPress={onClose}
         accessibilityLabel="Close menu"
@@ -30,5 +33,5 @@ export function Menu({ visible, onClose, onSeeAll }: MenuProps) {
 }
 
 const styles = StyleSheet.create({
-  container: { position: 'absolute', top: 60, left: 0, right: 0, bottom: 0, zIndex: 10 },
+  container: { position: 'absolute', left: 0, right: 0, bottom: 0, zIndex: 10 },
 })
