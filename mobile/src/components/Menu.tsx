@@ -15,7 +15,8 @@ export function Menu({ visible, onClose, onSeeAll }: MenuProps) {
     <Pressable
       onPress={onClose}
       accessibilityLabel="Close menu"
-      className="absolute inset-x-0 bottom-0 top-[60px] z-10 bg-black/50"
+      style={{ position: 'absolute', top: 60, left: 0, right: 0, bottom: 0 }}
+      className="z-10 bg-black/50"
     >
       <View className="self-start border-l-4 border-[#ff3837] bg-[#2f4d85] px-6 py-4 shadow-lg shadow-black">
         <Pressable onPress={onSeeAll} hitSlop={8} className="active:opacity-60">
