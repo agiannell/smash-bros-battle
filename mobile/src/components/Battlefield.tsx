@@ -51,6 +51,7 @@ export function Battlefield({ contenders, editNameFn, replaceFn, battleFn }: Bat
                   horizontal
                   imageSize={90}
                   stackButtons
+                  mirrored
                 />
               )}
             </View>

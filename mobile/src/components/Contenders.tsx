@@ -12,6 +12,7 @@ interface ContendersProps {
   horizontal?: boolean
   imageSize?: number
   stackButtons?: boolean
+  mirrored?: boolean
 }
 
 // iOS shadows have no spread, so the web's soft dark halo is a radial gradient behind the image.
@@ -46,6 +47,7 @@ export function Contenders({
   horizontal = false,
   imageSize = 120,
   stackButtons = false,
+  mirrored = false,
 }: ContendersProps) {
   const [editing, setEditing] = useState(false)
   const [userInput, setUserInput] = useState('')
@@ -70,25 +72,25 @@ export function Contenders({
         autoFocus
         className="mr-0.5 w-24 bg-white px-2 py-1 text-base text-black"
       />
-      <GreenButton label="Submit" onPress={handleEdit} />
+      <GreenButton label="Submit" onPress={handleEdit} compact={stackButtons} />
     </View>
   ) : (
-    <View className={horizontal ? 'items-start' : 'items-center'}>
+    <View className={horizontal ? (mirrored ? 'items-end' : 'items-start') : 'items-center'}>
       <Text className={`font-bangers tracking-widest text-white ${horizontal ? 'text-2xl' : 'text-center text-3xl'}`}>
         {contender.name}
       </Text>
-      <View className={`mt-1 ${stackButtons ? 'items-start' : 'flex-row'}`}>
-        <GreenButton label="Edit Name" onPress={() => setEditing(true)} />
-        <GreenButton label="Replace" onPress={() => replaceFn(contender.slot)} />
+      <View className={`mt-1 ${stackButtons ? 'items-stretch gap-1' : 'flex-row'}`}>
+        <GreenButton label="Edit Name" onPress={() => setEditing(true)} compact={stackButtons} />
+        <GreenButton label="Replace" onPress={() => replaceFn(contender.slot)} compact={stackButtons} />
       </View>
     </View>
   )
 
   if (horizontal) {
     return (
-      <View className="flex-row items-center">
+      <View className={`items-center ${mirrored ? 'flex-row-reverse' : 'flex-row'}`}>
         <ImageWithGlow uri={contender.image} label={contender.name} size={imageSize} />
-        <View className="ml-4 flex-1 items-start">
+        <View className={`flex-1 ${mirrored ? 'mr-4 items-end' : 'ml-4 items-start'}`}>
           {hp}
           {details}
         </View>
