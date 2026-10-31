@@ -8,6 +8,7 @@ import { useFonts } from 'expo-font'
 // weight, which makes Metro bundle all of them (~56MB for Noto Sans KR alone).
 import { Bangers_400Regular } from '@expo-google-fonts/bangers/400Regular'
 import { NotoSansKR_400Regular } from '@expo-google-fonts/noto-sans-kr/400Regular'
+import { AllFighters } from './src/components/AllFighters'
 import { Battlefield } from './src/components/Battlefield'
 import { Header } from './src/components/Header'
 import { Menu } from './src/components/Menu'
@@ -20,7 +21,8 @@ import { useGame } from './src/game/useGame'
 export default function App() {
   const [fontsLoaded] = useFonts({ Bangers_400Regular, NotoSansKR_400Regular })
   const [menuOpen, setMenuOpen] = useState(false)
-  const { randFighters, loading, fetchError, refetchRandom } = useFighters()
+  const [showAll, setShowAll] = useState(false)
+  const { randFighters, allFighters, loading, fetchError, refetchRandom } = useFighters()
   const { contenders, result, chooseContender, editName, replaceContender, clearContenders, battleFn } =
     useGame(refetchRandom)
 
@@ -29,10 +31,19 @@ export default function App() {
   // Two contenders means the queue is gone, so there's room to spread things out.
   const roomy = contenders.length === 2
 
+  const toggleHeader = () => {
+    if (showAll) setShowAll(false)
+    else setMenuOpen(open => !open)
+  }
+  const showAllFighters = () => {
+    setMenuOpen(false)
+    setShowAll(true)
+  }
+
   return (
     <SafeAreaProvider>
       <SafeAreaView className="flex-1 bg-navy">
-        <Header menuOpen={menuOpen} onMenuPress={() => setMenuOpen(open => !open)} />
+        <Header menuOpen={menuOpen || showAll} onMenuPress={toggleHeader} />
         <ScrollView contentContainerClassName="items-center pb-6" keyboardShouldPersistTaps="handled">
           {loading && <Text className="mt-6 px-4 font-noto text-white">Loading fighters...</Text>}
           {fetchError && <Text className="mt-6 px-4 text-center font-noto text-red-400">{fetchError}</Text>}
@@ -51,8 +62,8 @@ export default function App() {
             />
           </View>
         </ScrollView>
-        {/* See All Characters is wired up with AllFighters in the next step. */}
-        <Menu visible={menuOpen} onClose={() => setMenuOpen(false)} onSeeAll={() => setMenuOpen(false)} />
+        {showAll && <AllFighters allFighters={allFighters} />}
+        <Menu visible={menuOpen} onClose={() => setMenuOpen(false)} onSeeAll={showAllFighters} />
         {result && (
           <ResultHeader
             kind={result.kind}
