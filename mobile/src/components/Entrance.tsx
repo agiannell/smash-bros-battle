@@ -5,8 +5,10 @@ import Animated, { Easing, useAnimatedStyle, useSharedValue, withDelay, withTimi
 // Ports of the web's Tailwind keyframes. The web animates margins; here the same distances are
 // translations, which run on the UI thread.
 const PRESETS = {
-  flyUp: { axis: 'y', distance: 500, delay: 300, duration: 900, easing: Easing.bezier(0.9, 0.12, 0.7, 1.3) },
-  flyRight: { axis: 'x', distance: -500, delay: 0, duration: 700, easing: Easing.bezier(0.7, 0.12, 0.6, 1.7) },
+  flyUp: { fade: true, axis: 'y', distance: 500, delay: 300, duration: 900, easing: Easing.bezier(0.9, 0.12, 0.7, 1.3) },
+  flyRight: { fade: true, axis: 'x', distance: -500, delay: 0, duration: 700, easing: Easing.bezier(0.7, 0.12, 0.6, 1.7) },
+  // The web's 2000px distance is about two phone heights, so most of its 1.5s would be spent off-screen.
+  flyDown: { fade: false, axis: 'y', distance: -900, delay: 0, duration: 450, easing: Easing.bezier(0.9, 0.12, 0.7, 1) },
 } as const
 
 interface EntranceProps {
@@ -18,7 +20,7 @@ interface EntranceProps {
 
 // Plays once when it mounts. Rotating or re-rendering the parent does not replay it.
 export function Entrance({ preset, children, style, className }: EntranceProps) {
-  const { axis, distance, delay, duration, easing } = PRESETS[preset]
+  const { fade, axis, distance, delay, duration, easing } = PRESETS[preset]
   const progress = useSharedValue(0)
 
   useEffect(() => {
@@ -30,7 +32,7 @@ export function Entrance({ preset, children, style, className }: EntranceProps) 
   const animatedStyle = useAnimatedStyle(() => {
     const offset = (1 - progress.value) * distance
     return {
-      opacity: Math.min(Math.max(progress.value, 0), 1),
+      opacity: fade ? Math.min(Math.max(progress.value, 0), 1) : 1,
       transform: axis === 'x' ? [{ translateX: offset }] : [{ translateY: offset }],
     }
   })
