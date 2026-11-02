@@ -23,11 +23,13 @@ export function Fighters({ randFighters, chooseFn, contendersCount, clearFn }: F
         </Pressable>
       ) : (
         <>
-          <Text
-            className={`font-bangers tracking-widest text-white ${landscape ? 'text-3xl' : 'text-4xl'} ${contendersCount === 0 ? 'mb-1' : 'mb-4'}`}
-          >
-            Choose Your Character!
-          </Text>
+          <Entrance preset="flyRight">
+            <Text
+              className={`font-bangers tracking-widest text-white ${landscape ? 'text-3xl' : 'text-4xl'} ${contendersCount === 0 ? 'mb-1' : 'mb-4'}`}
+            >
+              Choose Your Character!
+            </Text>
+          </Entrance>
           {contendersCount === 0 && (
             <Text className="mb-4 px-6 text-center font-noto text-base text-white">
               Pick two fighters, then hit BATTLE. The higher HP wins!
