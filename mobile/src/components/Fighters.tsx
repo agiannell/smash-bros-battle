@@ -1,4 +1,5 @@
 import { Pressable, Text, View, useWindowDimensions } from 'react-native'
+import { Entrance } from './Entrance'
 import { Queue } from './Queue'
 import type { Fighter } from '../lib/types'
 
@@ -34,11 +35,14 @@ export function Fighters({ randFighters, chooseFn, contendersCount, clearFn }: F
           )}
         </>
       )}
-      <View className={`w-full flex-row ${landscape ? '' : 'flex-wrap'}`}>
-        {randFighters.map(f => (
-          <Queue key={f.id} fighter={f} chooseFn={chooseFn} contendersCount={contendersCount} />
-        ))}
-      </View>
+      {/* Mounted only once fighters exist so the fly-in plays when they arrive, not on an empty row. */}
+      {randFighters.length > 0 && (
+        <Entrance preset="flyUp" className={`w-full flex-row ${landscape ? '' : 'flex-wrap'}`}>
+          {randFighters.map(f => (
+            <Queue key={f.id} fighter={f} chooseFn={chooseFn} contendersCount={contendersCount} />
+          ))}
+        </Entrance>
+      )}
     </View>
   )
 }
