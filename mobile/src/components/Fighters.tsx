@@ -1,4 +1,5 @@
 import { Pressable, Text, View, useWindowDimensions } from 'react-native'
+import { Entrance } from './Entrance'
 import { Queue } from './Queue'
 import type { Fighter } from '../lib/types'
 
@@ -17,16 +18,20 @@ export function Fighters({ randFighters, chooseFn, contendersCount, clearFn }: F
   return (
     <View className="w-full items-center">
       {showReset ? (
-        <Pressable onPress={clearFn} className="mt-2 bg-[#535353] px-6 py-2 active:scale-90 active:bg-[#b92828]">
-          <Text className="font-bangers text-4xl tracking-widest text-white">Reset Battlefield</Text>
-        </Pressable>
+        <Entrance preset="fadeInDelay">
+          <Pressable onPress={clearFn} className="mt-2 bg-[#535353] px-6 py-2 active:scale-90 active:bg-[#b92828]">
+            <Text className="font-bangers text-4xl tracking-widest text-white">Reset Battlefield</Text>
+          </Pressable>
+        </Entrance>
       ) : (
         <>
-          <Text
-            className={`font-bangers tracking-widest text-white ${landscape ? 'text-3xl' : 'text-4xl'} ${contendersCount === 0 ? 'mb-1' : 'mb-4'}`}
-          >
-            Choose Your Character!
-          </Text>
+          <Entrance preset="flyRight">
+            <Text
+              className={`font-bangers tracking-widest text-white ${landscape ? 'text-3xl' : 'text-4xl'} ${contendersCount === 0 ? 'mb-1' : 'mb-4'}`}
+            >
+              Choose Your Character!
+            </Text>
+          </Entrance>
           {contendersCount === 0 && (
             <Text className="mb-4 px-6 text-center font-noto text-base text-white">
               Pick two fighters, then hit BATTLE. The higher HP wins!
@@ -34,11 +39,14 @@ export function Fighters({ randFighters, chooseFn, contendersCount, clearFn }: F
           )}
         </>
       )}
-      <View className={`w-full flex-row ${landscape ? '' : 'flex-wrap'}`}>
-        {randFighters.map(f => (
-          <Queue key={f.id} fighter={f} chooseFn={chooseFn} contendersCount={contendersCount} />
-        ))}
-      </View>
+      {/* Mounted only once fighters exist so the fly-in plays when they arrive, not on an empty row. */}
+      {randFighters.length > 0 && (
+        <Entrance preset="flyUp" className={`w-full flex-row ${landscape ? '' : 'flex-wrap'}`}>
+          {randFighters.map(f => (
+            <Queue key={f.id} fighter={f} chooseFn={chooseFn} contendersCount={contendersCount} />
+          ))}
+        </Entrance>
+      )}
     </View>
   )
 }

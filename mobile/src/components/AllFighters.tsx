@@ -1,5 +1,6 @@
 import { FlatList, Text, View, useWindowDimensions } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { Entrance } from './Entrance'
 import { FighterImage } from './FighterImage'
 import type { Fighter } from '../lib/types'
 
@@ -15,8 +16,9 @@ export function AllFighters({ allFighters }: AllFightersProps) {
   const numColumns = width > height ? 6 : 3
 
   return (
-    <View
-      className="absolute inset-x-0 bottom-0 z-10 bg-navy"
+    <Entrance
+      preset="flyDown"
+      className="absolute inset-x-0 bottom-0 z-10 bg-navy pb-10"
       style={{ top: insets.top + 60 }}
     >
       {/* FlatList can't change numColumns on the fly, so a new key forces a re-render on rotation. */}
@@ -41,6 +43,6 @@ export function AllFighters({ allFighters }: AllFightersProps) {
           </View>
         )}
       />
-    </View>
+    </Entrance>
   )
 }

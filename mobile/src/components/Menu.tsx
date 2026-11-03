@@ -1,5 +1,6 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { Entrance } from './Entrance'
 
 interface MenuProps {
   visible: boolean
@@ -23,14 +24,15 @@ export function Menu({ visible, onClose, onSeeAll }: MenuProps) {
         style={StyleSheet.absoluteFill}
         className="bg-black/50"
       />
-      <View
+      <Entrance
+        preset="growIn"
         style={{ paddingRight: Math.max(24, insets.right) }}
         className="self-end border-l-4 border-[#ff3837] bg-[#2f4d85] py-4 pl-6 shadow-lg shadow-black"
       >
         <Pressable onPress={onSeeAll} hitSlop={8} className="active:opacity-60">
           <Text className="font-bangers text-2xl tracking-widest text-white">See All Characters</Text>
         </Pressable>
-      </View>
+      </Entrance>
     </View>
   )
 }

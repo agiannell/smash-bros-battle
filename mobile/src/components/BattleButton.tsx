@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Pressable } from 'react-native'
 import Svg, { Path, Text as SvgText } from 'react-native-svg'
+import { Entrance } from './Entrance'
 
 const SHIELD_PATH =
   'M43.07,751.66A541.69,541.69,0,0,0,200.25,959.74V751.66Z' +
@@ -20,6 +21,7 @@ export function BattleButton({ onPress, disabled = false, size = 120 }: BattleBu
   const fill = disabled ? '#666' : pressed ? '#b92828' : '#ff3837'
 
   return (
+    <Entrance preset="fadeInDelay">
     <Pressable
       onPress={onPress}
       onPressIn={() => setPressed(true)}
@@ -48,5 +50,6 @@ export function BattleButton({ onPress, disabled = false, size = 120 }: BattleBu
         </SvgText>
       </Svg>
     </Pressable>
+    </Entrance>
   )
 }
