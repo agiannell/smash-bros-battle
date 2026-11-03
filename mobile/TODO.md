@@ -89,13 +89,17 @@ Items are in dependency order. **Checkpoints** (🚩) are hard gates — don't s
 
 ## Phase 4 — Animations (Reanimated)
 
-- [ ] `flyUp` → `translateY: 500 → 0` + opacity, `withDelay(1000, withTiming(1500, Easing.bezier(.9,.12,.7,1.3)))` — on the fighter queue row.
-- [ ] `flyRight` → `translateX`, 700ms, `Easing.bezier(.7,.12,.6,1.7)` (the overshoot) — on the empty-battlefield prompt.
-- [ ] `flyDown` → `translateY: 2000 → 0`, 1500ms, `Easing.bezier(.9,.12,.7,1)` — on the all-fighters grid.
-- [ ] `growIn` → `scale(0) → scale(1)`, 300ms — on the menu dropdown.
-  - ⚠️ RN has no `transformOrigin`; transforms pivot at center. Needs a compensating `translateX`/`translateY` to fake the web's `top right` origin.
-- [ ] `fadeIn` (200ms) and `fadeInDelay` (700ms) → `withTiming` on opacity — on the result overlay.
-- [ ] Verify animations don't re-trigger spuriously on rotation.
+All presets live in `src/components/Entrance.tsx`, which plays once on mount.
+
+- [x] `flyUp` on the fighter queue row. Tuned to a 300ms delay and 900ms (web: 1s and 1.5s), which felt too slow on a phone.
+- [x] `flyRight` on the "Choose Your Character!" heading, 700ms with the overshoot curve.
+- [x] `flyDown` on the all-fighters panel. It drops in from above, fully opaque, over 450ms from -900pt (web: 2000px, 1.5s; most of that distance was off-screen).
+- [x] `growIn` on the menu panel.
+  - RN 0.88 *does* support `transformOrigin`, so `'top right'` is set directly and no compensating translate is needed.
+- [x] `fadeIn` (200ms) on the contenders and `fadeInDelay` (700ms) on the BATTLE button and Reset button, as on the web. Not applied to the result overlay: its `Modal` already fades natively.
+- [x] Verify animations don't re-trigger spuriously on rotation.
+  - `Battlefield` renders one tree for both orientations, since separate landscape/portrait trees remounted the BATTLE button and replayed its fade.
+  - `Entrance` doubles as the landscape half-width slot; an extra wrapper shrink-wrapped and collapsed the `flex-1` details inside `Contenders`.
 
 ## Phase 5 — Wiring up and cleanup
 
