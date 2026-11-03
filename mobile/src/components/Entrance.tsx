@@ -9,6 +9,8 @@ const PRESETS = {
   flyRight: { fade: true, axis: 'x', distance: -500, delay: 0, duration: 700, easing: Easing.bezier(0.7, 0.12, 0.6, 1.7) },
   // The web's 2000px distance is about two phone heights, so most of its 1.5s would be spent off-screen.
   flyDown: { fade: false, axis: 'y', distance: -900, delay: 0, duration: 450, easing: Easing.bezier(0.9, 0.12, 0.7, 1) },
+  // Scales up from the top-right corner (where the hamburger is) instead of from the center.
+  growIn: { fade: true, axis: 'scale', distance: 0, delay: 0, duration: 300, easing: Easing.inOut(Easing.ease) },
 } as const
 
 interface EntranceProps {
@@ -31,10 +33,9 @@ export function Entrance({ preset, children, style, className }: EntranceProps) 
   // opacity is clamped to avoid going above fully opaque.
   const animatedStyle = useAnimatedStyle(() => {
     const offset = (1 - progress.value) * distance
-    return {
-      opacity: fade ? Math.min(Math.max(progress.value, 0), 1) : 1,
-      transform: axis === 'x' ? [{ translateX: offset }] : [{ translateY: offset }],
-    }
+    const opacity = fade ? Math.min(Math.max(progress.value, 0), 1) : 1
+    if (axis === 'scale') return { opacity, transform: [{ scale: progress.value }], transformOrigin: 'top right' }
+    return { opacity, transform: axis === 'x' ? [{ translateX: offset }] : [{ translateY: offset }] }
   })
 
   return (
