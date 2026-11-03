@@ -11,6 +11,9 @@ const PRESETS = {
   flyDown: { fade: false, axis: 'y', distance: -900, delay: 0, duration: 450, easing: Easing.bezier(0.9, 0.12, 0.7, 1) },
   // Scales up from the top-right corner (where the hamburger is) instead of from the center.
   growIn: { fade: true, axis: 'scale', distance: 0, delay: 0, duration: 300, easing: Easing.inOut(Easing.ease) },
+  // Fade-only: no movement. (The result overlay is a Modal, which already fades natively.)
+  fadeIn: { fade: true, axis: 'none', distance: 0, delay: 0, duration: 200, easing: Easing.inOut(Easing.ease) },
+  fadeInDelay: { fade: true, axis: 'none', distance: 0, delay: 0, duration: 700, easing: Easing.inOut(Easing.ease) },
 } as const
 
 interface EntranceProps {
@@ -34,6 +37,7 @@ export function Entrance({ preset, children, style, className }: EntranceProps) 
   const animatedStyle = useAnimatedStyle(() => {
     const offset = (1 - progress.value) * distance
     const opacity = fade ? Math.min(Math.max(progress.value, 0), 1) : 1
+    if (axis === 'none') return { opacity }
     if (axis === 'scale') return { opacity, transform: [{ scale: progress.value }], transformOrigin: 'top right' }
     return { opacity, transform: axis === 'x' ? [{ translateX: offset }] : [{ translateY: offset }] }
   })

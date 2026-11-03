@@ -18,9 +18,11 @@ export function Fighters({ randFighters, chooseFn, contendersCount, clearFn }: F
   return (
     <View className="w-full items-center">
       {showReset ? (
-        <Pressable onPress={clearFn} className="mt-2 bg-[#535353] px-6 py-2 active:scale-90 active:bg-[#b92828]">
-          <Text className="font-bangers text-4xl tracking-widest text-white">Reset Battlefield</Text>
-        </Pressable>
+        <Entrance preset="fadeInDelay">
+          <Pressable onPress={clearFn} className="mt-2 bg-[#535353] px-6 py-2 active:scale-90 active:bg-[#b92828]">
+            <Text className="font-bangers text-4xl tracking-widest text-white">Reset Battlefield</Text>
+          </Pressable>
+        </Entrance>
       ) : (
         <>
           <Entrance preset="flyRight">
