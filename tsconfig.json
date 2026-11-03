@@ -30,6 +30,7 @@
     "node_modules",
     "cdk.out",
     "build",
-    "next-app"
+    "next-app",
+    "mobile"
   ]
 }

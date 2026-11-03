@@ -29,6 +29,16 @@ yarn typecheck
 cd next-app && yarn typecheck
 ```
 
+**Type-check the mobile app:**
+```
+cd mobile && yarn typecheck
+```
+
+**Pre-push hook** (typechecks root, `next-app`, and `mobile`; enable once per clone):
+```
+git config core.hooksPath .githooks
+```
+
 **CDK commands:**
 ```
 npx cdk synth        # synthesize CloudFormation template
@@ -67,21 +77,32 @@ This is an **AWS CDK v2** monorepo (TypeScript) that deploys a Next.js frontend,
 ### Next.js App (`next-app/`)
 
 **Data flow:**
-1. `useFighters` hook fetches `GET /api/fighters` (5 random) and `GET /api/all-fighters` on mount
-2. API routes call `lib/getFighters.ts` which queries DynamoDB directly via `DynamoDBDocumentClient`
+1. `page.tsx` streams the async server component `GameLoader` inside `Suspense`; it calls `getRandomFighters(5)` and `getAllFighters()` from `lib/getFighters.ts`, which queries DynamoDB directly via `DynamoDBDocumentClient`
+2. `Game` receives both lists as props; `useFighters` only seeds state from them (nothing is fetched on mount) and calls `GET /api/fighters` to re-roll the random 5 on reset
 3. `useGame` hook manages all client-side game state (contenders, winner, draw)
 4. Contenders are **client-state only** — no server persistence. User-edited names persist for the session and reset on clear.
+5. `GET /api/fighters` (`?count=N`, default 5) and `GET /api/all-fighters` are also the public API the `mobile/` app uses.
 
 **Key files:**
 - `app/game/Game.tsx` — `'use client'` root, composes `useGame` + `useFighters`, renders header + battlefield + fighters
 - `app/game/hooks/useGame.ts` — all game state and handlers (contenders, battle logic, clear)
-- `app/game/hooks/useFighters.ts` — fighter data fetching and refetch-on-reset
+- `app/game/GameLoader.tsx` — async server component that loads both fighter lists and passes them to `Game`
+- `app/game/hooks/useFighters.ts` — holds the server-provided lists and refetches the random 5 on reset
 - `app/lib/getFighters.ts` — DynamoDB query (server-side); paginates with `do/while` + `LastEvaluatedKey`
 - `app/lib/types.ts` — `Fighter` and `Contender` interfaces
 - `app/globals.css` — Tailwind directives + background image classes (battlefield, buttons)
 - `next-app/tailwind.config.ts` — custom animations (`flyUp`, `flyRight`, `flyDown`, `fadeIn`, `fadeInDelay`, `growIn`)
 
 **Environment variable**: `FIGHTERS_TABLE_NAME` — injected at runtime by the CDK `Nextjs` construct. Not available at Next.js build time. The `/api/fighters` route uses `export const dynamic = 'force-dynamic'` to ensure each request gets a fresh random selection.
+
+### Mobile App (`mobile/`)
+
+An iOS port of the game built with React Native + Expo, run on personal devices through Expo Go. See `mobile/CLAUDE.md` for commands and gotchas, `mobile/PLAN.md` for the reasoning, and `mobile/TODO.md` for the phase checklist.
+
+- **Independent package**, like `next-app/`: own `package.json` and `yarn.lock`, no yarn workspaces. Workspaces would hoist dependencies out of `next-app/node_modules`, which the OpenNext bundle depends on.
+- **Data**: reads `GET /api/fighters?count=N` and `GET /api/all-fighters` from `https://smashbros.anthonygnl.com` over HTTPS. No AWS credentials on the device.
+- **Shared code**: none by design. `useGame.ts` and `types.ts` are copies of the web files, so changes to the game rules must be made in both places.
+- The root `tsconfig.json` excludes `mobile/`; keep it that way or root `yarn typecheck` fails.
 
 ## Gotchas
 

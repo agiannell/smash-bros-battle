@@ -1,33 +1,45 @@
 # Smash Bros. Battle Game
 
-## Technologies
+Pick two of five random fighters, hit BATTLE, and the one with the higher random HP wins. Live at [smashbros.anthonygnl.com](https://smashbros.anthonygnl.com).
 
-This project was built with React, Node.js, and Express.
+- Edit a fighter's name, replace a single fighter, or reset the whole battlefield.
+- Browse every available fighter from the menu.
 
-## Use
+## What's in the repo
 
-### Overview
+| Directory | What it is |
+|---|---|
+| `next-app/` | The web game: Next.js (App Router), React, Tailwind CSS |
+| `mobile/` | iOS app: React Native + Expo, run on your own devices through Expo Go |
+| `lib/`, `bin/` | AWS CDK stack: DynamoDB table, Next.js on CloudFront, two Lambdas |
+| `lambdas/` | Weekly sync of the fighter list from the Amiibo API |
 
-This is a simple game where the user can select two character to battle.
-Character HP is randomly generated upon selection. The character with the highest HP wins the battle.
+`next-app/` and `mobile/` are independent packages, each with its own `package.json` and `yarn.lock`. This is deliberately not a yarn workspace: the CDK deploy bundles `next-app/node_modules` as-is. The mobile app reads fighters over HTTPS from the web app's public API.
 
-### Other Features
+Each package has its own `CLAUDE.md` with commands and gotchas; start there.
 
-- Users can edit player names, replace single players, and reset the entire battlefield.
-- Users can also view all available characters.
+## Getting started
 
-## Getting Started
+```bash
+yarn install                      # CDK + Lambdas (repo root)
+cd next-app && yarn install       # web app
+cd mobile && yarn install         # mobile app
+git config core.hooksPath .githooks   # typecheck every package before each push
+```
 
-- Clone down the repo
-- Install dependencies with `yarn`
+### Web
 
-### Run Locally
+`cd next-app && yarn dev`. It reads DynamoDB directly, so it needs AWS credentials and a `FIGHTERS_TABLE_NAME` environment variable.
 
-- Install `nodemon` globally if not installed
-  - `sudo npm i -g nodemon`
+### Mobile
 
-- Run the server using `nodemon`
-  - Server will be running on `http://localhost:4002`
+`cd mobile && npx expo start`, then scan the QR code with Expo Go on your phone. No AWS credentials are needed.
 
-- Run the React frontend with `yarn start`
-  - Frontend will be available on `http://localhost:3000`
+### Deploy
+
+`yarn deploy` builds the Next.js app and runs `cdk deploy`. In CI, the `deploy.yml` GitHub Action does the same.
+
+## Checks
+
+- `yarn test`: CDK assertions (CI runs this on every push and pull request).
+- `yarn typecheck` in the root, `next-app/`, and `mobile/`. The pre-push hook runs all three.

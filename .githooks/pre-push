@@ -1,0 +1,15 @@
+#!/bin/sh
+# Typechecks every package before a push. Enable once per clone with:
+#   git config core.hooksPath .githooks
+set -e
+
+root=$(git rev-parse --show-toplevel)
+
+for dir in . next-app mobile; do
+  if [ ! -d "$root/$dir/node_modules" ]; then
+    echo "pre-push: skipping $dir (no node_modules; run yarn install there)"
+    continue
+  fi
+  echo "pre-push: typechecking $dir"
+  (cd "$root/$dir" && yarn typecheck)
+done
