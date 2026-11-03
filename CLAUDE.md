@@ -29,6 +29,16 @@ yarn typecheck
 cd next-app && yarn typecheck
 ```
 
+**Type-check the mobile app:**
+```
+cd mobile && yarn typecheck
+```
+
+**Pre-push hook** (typechecks root, `next-app`, and `mobile`; enable once per clone):
+```
+git config core.hooksPath .githooks
+```
+
 **CDK commands:**
 ```
 npx cdk synth        # synthesize CloudFormation template
@@ -84,6 +94,15 @@ This is an **AWS CDK v2** monorepo (TypeScript) that deploys a Next.js frontend,
 - `next-app/tailwind.config.ts` — custom animations (`flyUp`, `flyRight`, `flyDown`, `fadeIn`, `fadeInDelay`, `growIn`)
 
 **Environment variable**: `FIGHTERS_TABLE_NAME` — injected at runtime by the CDK `Nextjs` construct. Not available at Next.js build time. The `/api/fighters` route uses `export const dynamic = 'force-dynamic'` to ensure each request gets a fresh random selection.
+
+### Mobile App (`mobile/`)
+
+An iOS port of the game built with React Native + Expo, run on personal devices through Expo Go. See `mobile/CLAUDE.md` for commands and gotchas, `mobile/PLAN.md` for the reasoning, and `mobile/TODO.md` for the phase checklist.
+
+- **Independent package**, like `next-app/`: own `package.json` and `yarn.lock`, no yarn workspaces. Workspaces would hoist dependencies out of `next-app/node_modules`, which the OpenNext bundle depends on.
+- **Data**: reads `GET /api/fighters?count=N` and `GET /api/all-fighters` from `https://smashbros.anthonygnl.com` over HTTPS. No AWS credentials on the device.
+- **Shared code**: none by design. `useGame.ts` and `types.ts` are copies of the web files, so changes to the game rules must be made in both places.
+- The root `tsconfig.json` excludes `mobile/`; keep it that way or root `yarn typecheck` fails.
 
 ## Gotchas
 
