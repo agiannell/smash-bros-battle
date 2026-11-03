@@ -25,7 +25,7 @@ Items are in dependency order. **Checkpoints** (🚩) are hard gates — don't s
   curl -s https://smashbros.anthonygnl.com/api/all-fighters | jq 'length'   # expect ~90
   curl -s https://smashbros.anthonygnl.com/api/all-fighters | jq '.[0]'     # expect {id, name, image}
   ```
-- [ ] Load `https://smashbros.anthonygnl.com` in a browser — confirm the web game still works end to end (the deploy touched the Next build).
+- [x] Load `https://smashbros.anthonygnl.com` in a browser — confirm the web game still works end to end (the deploy touched the Next build).
 
 ## Phase 1 — Scaffold the Expo app
 
