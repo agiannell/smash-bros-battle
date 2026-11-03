@@ -103,13 +103,14 @@ All presets live in `src/components/Entrance.tsx`, which plays once on mount.
 
 ## Phase 5 — Wiring up and cleanup
 
-- [ ] Add a `typecheck` script to `mobile/package.json` (`tsc --noEmit`).
-- [ ] Add a `mobile` typecheck job to `.github/workflows/test.yml`. Consider adding `next-app` typecheck too — that workflow currently only runs root CDK tests and never touches either frontend.
-- [ ] Run `snyk_code_scan` over `mobile/src` and the new API route; fix any findings; rescan until clean.
-- [ ] Write `mobile/CLAUDE.md` — commands, stack, directory structure, and the gotchas that bit during the port.
-- [ ] Add a mobile section to the root `CLAUDE.md`.
-- [ ] **Fix stale docs** (pre-existing, surfaced during planning):
-  - [ ] Root `CLAUDE.md` + `next-app/CLAUDE.md`: the data-flow sections describe `useFighters` fetching both endpoints on mount. Untrue since `40ede47` — the web app is server-rendered and only fetches `/api/fighters` lazily on reset.
-  - [ ] `next-app/CLAUDE.md`: remove `.btn-battle` from the background-image class list — it became an inline SVG in `fc45a64`.
-  - [ ] Root `README.md`: describes v1 (Express, nodemon, port 4002). Entirely obsolete.
-- [ ] Consider deleting the vestigial `/api` directory at repo root — untracked, contains only stale `node_modules` and an empty `api/src/fighters/`.
+- [x] Add a `typecheck` script to `mobile/package.json` (`tsc --noEmit`). (Already there from Phase 1.)
+- [x] Typecheck on **pre-push**, not in CI: `.githooks/pre-push` runs `yarn typecheck` in the root, `next-app/`, and `mobile/`. Enable once per clone with `git config core.hooksPath .githooks`.
+  - Found while testing it: root `yarn typecheck` was failing because the root `tsconfig.json` picked up `mobile/`; `mobile` is now excluded.
+- [x] ~~Run `snyk_code_scan`~~ — skipped: this project doesn't use Snyk.
+- [x] Write `mobile/CLAUDE.md` — commands, stack, directory structure, and the gotchas that bit during the port.
+- [x] Add a mobile section to the root `CLAUDE.md`.
+- [x] **Fix stale docs** (pre-existing, surfaced during planning):
+  - [x] Root `CLAUDE.md` + `next-app/CLAUDE.md`: the data-flow sections describe `useFighters` fetching both endpoints on mount. Untrue since `40ede47` — the web app is server-rendered and only fetches `/api/fighters` lazily on reset. (Also corrected: Next 16, the `?count=` param, and how `/api/all-fighters` is cached.)
+  - [x] `next-app/CLAUDE.md`: remove `.btn-battle` from the background-image class list — it became an inline SVG in `fc45a64`.
+  - [x] Root `README.md`: describes v1 (Express, nodemon, port 4002). Rewritten for the current repo.
+- [x] Deleted the vestigial `/api` directory (it only held stale `node_modules` and empty folders) and git-ignored the generated `next-app/AGENTS.md` and `*.tsbuildinfo`.

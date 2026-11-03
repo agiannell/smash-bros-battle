@@ -3,13 +3,16 @@ node_modules
 next-app/node_modules
 next-app/.next
 next-app/.open-next
-api/node_modules
+
+# Written and re-added by `next dev`
+next-app/AGENTS.md
 
 # CDK build output
 build
 cdk.out
 *.d.ts
 *.js.map
+*.tsbuildinfo
 
 # CDK context (auto-generated, check in for reproducible deploys)
 # cdk.context.json
